@@ -1,0 +1,155 @@
+/* =========================================================
+   header.css — transparente sobre o hero, sólido ao rolar
+   ========================================================= */
+
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 90;
+  height: var(--header-h);
+  display: flex;
+  align-items: center;
+  color: var(--creme);
+  transition: background .5s var(--ease-suave),
+              color .5s var(--ease-suave),
+              box-shadow .5s var(--ease-suave);
+}
+
+/* a barra de fundo cresce de cima para baixo quando a página rola */
+.header::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--creme);
+  transform: scaleY(0);
+  transform-origin: top center;
+  transition: transform .55s var(--ease-elast);
+}
+
+.header.is-rolado {
+  color: var(--tinta);
+  box-shadow: 0 1px 0 var(--linha);
+}
+.header.is-rolado::before { transform: scaleY(1); }
+
+/* sem width: 100% aqui. A regra .wrap do mesmo elemento é que
+   define a largura; o 100% a sobrescrevia e jogava a navegação
+   para fora da margem, cortando o último item na borda. */
+.header__interno {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+}
+
+.header__marca { --marca-tam: clamp(26px, 3vw, 32px); }
+
+.header__nav {
+  display: flex;
+  align-items: center;
+  gap: clamp(1.2rem, 2.2vw, 2.4rem);
+  font-size: .82rem;
+  letter-spacing: .04em;
+}
+
+.header__link {
+  position: relative;
+  padding: .35rem 0;
+}
+
+.header__link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: right center;
+  transition: transform .4s var(--ease-elast);
+}
+.header__link:hover::after,
+.header__link:focus-visible::after,
+.header__link[aria-current="true"]::after {
+  transform: scaleX(1);
+  transform-origin: left center;
+}
+
+/* ---------- botão hambúrguer ---------- */
+
+.header__menu-btn {
+  display: none;
+  width: 40px;
+  height: 40px;
+  position: relative;
+  z-index: 2;
+}
+
+.header__menu-btn i {
+  position: absolute;
+  left: 8px;
+  width: 24px;
+  height: 1px;
+  background: currentColor;
+  transition: transform .45s var(--ease-elast), opacity .25s ease;
+}
+.header__menu-btn i:nth-child(1) { top: 15px; }
+.header__menu-btn i:nth-child(2) { top: 22px; }
+
+.header__menu-btn[aria-expanded="true"] i:nth-child(1) { transform: translateY(3.5px) rotate(45deg); }
+.header__menu-btn[aria-expanded="true"] i:nth-child(2) { transform: translateY(-3.5px) rotate(-45deg); }
+
+/* ---------- menu mobile ---------- */
+
+.menu-mobile {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  background: var(--verde-profundo);
+  color: var(--creme);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1.1rem;
+  padding: var(--header-h) var(--respiro-lateral) 3rem;
+  clip-path: inset(0 0 100% 0);
+  visibility: hidden;
+  transition: clip-path .7s var(--ease-elast), visibility .7s;
+}
+
+.menu-mobile.is-aberto {
+  clip-path: inset(0 0 0 0);
+  visibility: visible;
+}
+
+.menu-mobile a {
+  font-family: var(--fonte-display);
+  font-size: clamp(2rem, 8vw, 3rem);
+  line-height: 1;
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity .5s var(--ease-suave), transform .6s var(--ease-elast);
+  transition-delay: calc(var(--i) * .06s);
+}
+.menu-mobile.is-aberto a { opacity: 1; transform: none; }
+
+.menu-mobile a:hover { color: var(--ouro-claro); }
+
+.menu-mobile__rodape {
+  margin-top: 2rem;
+  font-size: var(--t-mini);
+  letter-spacing: .28em;
+  text-transform: uppercase;
+  opacity: 0;
+  transition: opacity .5s var(--ease-suave) .38s;
+}
+.menu-mobile.is-aberto .menu-mobile__rodape { opacity: .7; }
+
+@media (max-width: 1023px) {
+  .header__nav { display: none; }
+  .header__menu-btn { display: block; }
+}

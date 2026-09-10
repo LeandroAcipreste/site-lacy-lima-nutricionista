@@ -1,0 +1,197 @@
+/* =========================================================
+   5. ESPECIALIDADES — a pilha de cartões
+
+   A lógica é a mesma da dobra de dúvidas do site-pri: ao chegar
+   aqui a página parece parar, os cartões passam um a um, e
+   depois a rolagem segue.
+
+   QUEM PRENDE CADA CARTÃO É `position: sticky`, NÃO JAVASCRIPT.
+   O cartão gruda no topo e fica lá enquanto o próximo sobe por
+   cima dele; a margem embaixo de cada um é o tempo que ele passa
+   parado na tela. Não há pin, não há timeline, não há variável de
+   progresso — e por isso a dobra funciona com o JavaScript fora
+   do ar.
+
+   Cada cartão gruda alguns pixels mais abaixo que o anterior
+   (--i, escrito no HTML), então a borda de cima dos que já
+   passaram continua aparecendo e a pilha se lê como pilha.
+
+   ATENÇÃO: sticky morre EM SILÊNCIO se qualquer ancestral tiver
+   overflow hidden, clip, scroll ou auto. Por isso nem a
+   .especialidades nem a .pilha recortam nada. Se um dia a dobra
+   parar de prender, é o primeiro lugar a olhar. O `overflow` do
+   .pilha__cartao é seguro: recorte no PRÓPRIO elemento sticky não
+   atrapalha, só no ancestral.
+   ========================================================= */
+
+.especialidades { padding-bottom: 0; }
+
+.especialidades__cabecalho {
+  display: grid;
+  grid-template-columns: 1.05fr .95fr;
+  gap: clamp(1.4rem, 3vw, 3.4rem);
+  align-items: end;
+  margin-bottom: clamp(2.2rem, 4vw, 3.6rem);
+}
+
+.especialidades__titulo {
+  font-size: var(--t-h2);
+  letter-spacing: -.02em;
+  max-width: 18ch;
+}
+
+/* --- a pilha --- */
+
+.pilha {
+  position: relative;
+  width: min(var(--largura-max), 100% - var(--respiro-lateral) * 2);
+  margin-inline: auto;
+  padding-bottom: clamp(40px, 8vw, 110px);
+}
+
+.pilha__cartao {
+  position: sticky;
+  /* cada cartão para um degrau abaixo do anterior */
+  top: calc(var(--header-h) + 2.5vh + var(--i, 0) * 13px);
+
+  /* a altura manda no tempo de tela; a margem estica esse tempo */
+  height: clamp(360px, 66svh, 620px);
+  margin-bottom: clamp(60px, 22svh, 190px);
+
+  margin-inline: 0;
+  overflow: hidden;
+  border-radius: 2px;
+  background: var(--verde-profundo);
+  color: var(--creme);
+  isolation: isolate;
+}
+
+/* Não existe regra de `:last-child` aqui, de propósito: o último
+   filho da .pilha é o espaçador, não um cartão. E a margem do
+   último cartão se cancela na conta abaixo de qualquer jeito. */
+
+/* O TEMPO DE TELA DO ÚLTIMO CARTÃO, e por que precisa deste
+   elemento vazio.
+
+   Para um sticky com `top: T` dentro de um contenedor:
+     começa a grudar em   S1 = P + f − T
+     solta em             S2 = P + H − h − mb − T
+     permanência = S2 − S1 = H − f − h − mb      (o T se cancela)
+
+   onde P é o topo do contenedor, H a altura da CAIXA DE CONTEÚDO
+   dele, f o deslocamento do cartão no fluxo, h a altura dele e mb
+   a margem de baixo dele.
+
+   Para o ÚLTIMO filho, H = f + h + mb por definição — o fluxo dele
+   é o que termina o conteúdo. Substituindo: permanência = 0,
+   SEMPRE. Aumentar a margem dele aumenta H na mesma medida e se
+   cancela; e padding do contenedor não entra, porque a conta é na
+   caixa de conteúdo. Medi as duas coisas, e as duas deram zero.
+   No próprio site-pri o último card também nunca gruda.
+
+   A única saída é altura DEPOIS dele que não seja margem dele.
+   Este irmão vazio acrescenta a H sem entrar em mb:
+
+     H = f + h + mb + espaçador
+     permanência = H − f − h − mb = espaçador
+
+   ou seja, a permanência do último cartão é EXATAMENTE a altura
+   deste elemento, e a margem dele não importa. Conferido na tela:
+   previsão 180 px, medido 180 px, com o cartão no top exato nos
+   três pontos da janela e solto 60 px depois dela. */
+.pilha__fim {
+  height: clamp(60px, 20svh, 180px);
+  pointer-events: none;
+}
+
+.pilha__cartao img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 42%;
+}
+
+/* o véu existe para o texto ter contraste em cima de foto:
+   dele para baixo o verde fecha quase opaco */
+.pilha__cartao::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg,
+      rgba(3, 24, 21, .10) 0%,
+      rgba(3, 24, 21, .38) 42%,
+      rgba(3, 24, 21, .88) 100%);
+  pointer-events: none;
+}
+
+.pilha__conteudo {
+  position: absolute;
+  z-index: 2;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  padding: clamp(1.4rem, 3.2vw, 3rem);
+  display: grid;
+  gap: .7rem;
+  justify-items: start;
+}
+
+.pilha__num {
+  font-family: var(--fonte-texto);
+  font-size: var(--t-mini);
+  letter-spacing: .3em;
+  color: var(--ouro-claro);
+}
+
+.pilha__titulo {
+  font-size: clamp(1.5rem, 1rem + 2.2vw, 2.6rem);
+  letter-spacing: -.02em;
+  line-height: 1.06;
+  max-width: 16ch;
+}
+
+.pilha__texto {
+  max-width: 46ch;
+  color: rgba(242, 238, 230, .82);
+  font-size: clamp(.9rem, .82rem + .3vw, 1.02rem);
+}
+
+.pilha__lista {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem .7rem;
+  list-style: none;
+  padding: 0;
+  margin: .3rem 0 0;
+}
+
+.pilha__lista li {
+  font-family: var(--fonte-texto);
+  font-size: var(--t-mini);
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: rgba(242, 238, 230, .72);
+  border: 1px solid var(--linha-clara);
+  border-radius: 999px;
+  padding: .38rem .8rem;
+}
+
+/* --- quebras --- */
+
+@media (max-width: 1023px) {
+  .especialidades__cabecalho { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 900px) {
+  .pilha__cartao {
+    top: calc(var(--header-h) + 1.5vh + var(--i, 0) * 9px);
+    height: clamp(320px, 62svh, 520px);
+    margin-bottom: clamp(48px, 16svh, 140px);
+  }
+}
+
+@media (max-width: 620px) {
+  .pilha__lista li { letter-spacing: .08em; }
+}

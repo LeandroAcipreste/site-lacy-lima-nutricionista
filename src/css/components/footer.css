@@ -1,0 +1,86 @@
+/* =========================================================
+   footer.css
+   ========================================================= */
+
+.footer {
+  background: var(--verde-profundo);
+  color: var(--creme);
+  padding-block: clamp(3rem, 6vw, 5.5rem) 2rem;
+}
+
+.footer__topo {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr auto;
+  gap: clamp(2rem, 5vw, 4.5rem);
+  align-items: start;
+}
+
+.footer__marca { --marca-tam: 40px; color: var(--ouro-claro); }
+
+.footer__frase {
+  font-family: var(--fonte-display);
+  font-size: clamp(1.5rem, 1rem + 1.6vw, 2.3rem);
+  line-height: 1.08;
+  max-width: 20ch;
+  margin-top: 1.4rem;
+}
+
+.footer__col h4 {
+  font-family: var(--fonte-texto);
+  font-size: var(--t-mini);
+  font-weight: 500;
+  letter-spacing: var(--tracking-eyebrow);
+  text-transform: uppercase;
+  color: var(--ouro);
+  margin-bottom: 1.1rem;
+}
+
+.footer__lista {
+  display: flex;
+  flex-direction: column;
+  gap: .65rem;
+  font-size: .9rem;
+}
+
+.footer__lista a {
+  position: relative;
+  width: fit-content;
+  transition: color .35s var(--ease-suave), transform .35s var(--ease-suave);
+}
+.footer__lista a:hover,
+.footer__lista a:focus-visible {
+  color: var(--ouro-claro);
+  transform: translateX(4px);
+}
+
+.footer__assinatura {
+  --ass-larg: clamp(150px, 16vw, 210px);
+  color: rgba(242, 238, 230, .85);
+  margin-top: 1.6rem;
+}
+
+.footer__base {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: clamp(2.5rem, 5vw, 4rem);
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--linha-clara);
+  font-size: .72rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: rgba(242, 238, 230, .58);
+}
+
+.footer__base a { transition: color .3s var(--ease-suave); }
+.footer__base a:hover { color: var(--ouro-claro); }
+
+@media (max-width: 1023px) {
+  .footer__topo { grid-template-columns: 1fr 1fr; }
+  .footer__col--marca { grid-column: 1 / -1; }
+}
+@media (max-width: 600px) {
+  .footer__topo { grid-template-columns: 1fr; }
+  .footer__base { flex-direction: column; }
+}

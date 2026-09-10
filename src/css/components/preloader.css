@@ -1,0 +1,122 @@
+/* =========================================================
+   preloader.css — a marca sendo carregada.
+
+   Uma tela só: o símbolo gira uma volta inteira enquanto o
+   nome dela é descoberto da esquerda para a direita, e
+   "NUTRICIONISTA" abre o espacejamento por baixo. Devagar,
+   porque é a primeira coisa que a pessoa vê da marca.
+   ========================================================= */
+
+.preloader {
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  display: grid;
+  place-items: center;
+  background: var(--verde-profundo);
+  color: var(--creme);
+  transition: opacity .85s var(--ease-suave), visibility .85s;
+}
+
+/* uma respiração de luz no fundo, para o verde não ficar chapado */
+.preloader::before {
+  content: "";
+  position: absolute;
+  inset: -20%;
+  background: radial-gradient(52% 46% at 50% 50%,
+      rgba(3, 114, 111, .34) 0%, transparent 72%);
+  animation: preloader-respira 7s ease-in-out infinite;
+}
+
+.preloader.is-saindo {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* --- o lockup --- */
+
+.preloader__lockup {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(.8rem, 1.8vw, 1.5rem);
+}
+
+.preloader__simbolo {
+  width: clamp(54px, 6.5vw, 92px);
+  aspect-ratio: 1;
+  flex: none;
+  background: var(--ouro);
+  -webkit-mask: url("../../../assets/images/shared/marca-lacy.png") center / contain no-repeat;
+          mask: url("../../../assets/images/shared/marca-lacy.png") center / contain no-repeat;
+  opacity: 0;
+  transform: rotate(-180deg) scale(.68);
+  animation: marca-gira 3s cubic-bezier(.4, .03, .2, 1) .15s forwards;
+}
+
+.preloader__nome {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.preloader__nome b {
+  font-family: var(--fonte-display);
+  font-weight: 400;
+  font-size: clamp(2.1rem, 1.3rem + 3.2vw, 4.4rem);
+  line-height: .95;
+  color: var(--ouro-claro);
+  /* o nome é descoberto, não some por opacidade: o -22% embaixo
+     deixa a perna do "y" passar sem ser cortada */
+  clip-path: inset(0 100% -22% 0);
+  animation: nome-revela 1.8s cubic-bezier(.5, .04, .18, 1) .7s forwards;
+}
+
+.preloader__nome i {
+  font-family: var(--fonte-texto);
+  font-style: normal;
+  font-weight: 500;
+  font-size: clamp(.6rem, .5rem + .32vw, .82rem);
+  color: var(--ouro);
+  letter-spacing: .1em;
+  margin-top: .85rem;
+  opacity: 0;
+  animation: sub-abre 1.3s var(--ease-suave) 2s forwards;
+}
+
+/* --- keyframes --- */
+
+/* uma volta inteira: de -180deg a +180deg */
+@keyframes marca-gira {
+  0%   { opacity: 0; transform: rotate(-180deg) scale(.68); }
+  14%  { opacity: 1; }
+  100% { opacity: 1; transform: rotate(180deg) scale(1); }
+}
+
+@keyframes nome-revela {
+  to { clip-path: inset(0 0 -22% 0); }
+}
+
+@keyframes sub-abre {
+  to { opacity: 1; letter-spacing: .46em; }
+}
+
+@keyframes preloader-respira {
+  0%, 100% { opacity: .75; transform: scale(1); }
+  50%      { opacity: 1;   transform: scale(1.06); }
+}
+
+/* quem pediu menos movimento recebe a marca, não o giro */
+@media (prefers-reduced-motion: reduce) {
+  .preloader::before { animation: none; }
+
+  .preloader__simbolo {
+    animation: marca-surge .8s ease forwards;
+  }
+  @keyframes marca-surge { to { opacity: 1; transform: none; } }
+
+  .preloader__nome b { animation-duration: 1s; animation-delay: .3s; }
+  .preloader__nome i { animation-delay: 1s; }
+}

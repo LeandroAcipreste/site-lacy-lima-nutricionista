@@ -1,0 +1,61 @@
+/* =========================================================
+   4. NÚMEROS
+   ========================================================= */
+
+.numeros { background: var(--creme); padding-block: 0; }
+
+.numeros__grade {
+  display: grid;
+  grid-template-columns: 1.4fr repeat(4, 1fr);
+  border-top: 1px solid var(--linha);
+  border-bottom: 1px solid var(--linha);
+}
+
+.numeros__intro {
+  padding: clamp(2.2rem, 4vw, 3.4rem) clamp(1.5rem, 3vw, 2.6rem) clamp(2.2rem, 4vw, 3.4rem) 0;
+}
+
+.numeros__intro h3 {
+  font-size: clamp(1.8rem, 1.2rem + 2vw, 2.9rem);
+  max-width: 12ch;
+  margin-bottom: .9rem;
+}
+
+.numeros__intro p { font-size: .86rem; color: var(--tinta-suave); max-width: 32ch; }
+
+.numero {
+  padding: clamp(2.2rem, 4vw, 3.4rem) clamp(1rem, 2vw, 1.6rem);
+  border-left: 1px solid var(--linha);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.numero strong {
+  font-family: var(--fonte-display);
+  font-size: clamp(2.1rem, 1.4rem + 2.2vw, 3.2rem);
+  font-weight: 400;
+  line-height: 1;
+  color: var(--tinta);
+}
+
+.numero span {
+  font-size: .8rem;
+  line-height: 1.4;
+  margin-top: .6rem;
+  color: var(--tinta-suave);
+}
+
+/* --- quebras --- */
+
+@media (max-width: 1023px) {
+  .numeros__grade { grid-template-columns: repeat(2, 1fr); }
+  .numeros__intro { grid-column: 1 / -1; padding-right: 0; }
+  .numero { border-top: 1px solid var(--linha); }
+  .numero:nth-child(2), .numero:nth-child(4) { border-left: 0; }
+}
+
+@media (max-width: 479px) {
+  .numeros__grade { grid-template-columns: 1fr; }
+  .numero { border-left: 0; }
+}

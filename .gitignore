@@ -1,0 +1,13 @@
+# material de referência, não é código do site
+# (a pasta no disco está grafada "desginsystem"; a outra linha
+#  cobre o caso de ela ser renomeada para o certo)
+desginsystem/
+designsystem/
+
+# configuração local de editor e de ferramentas
+.vscode/
+.claude/
+
+node_modules/
+.DS_Store
+Thumbs.db

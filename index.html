@@ -1,0 +1,703 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- síncrono e antes do CSS: sem isso os estados "fora" das
+       animações piscariam visíveis antes do JS chegar -->
+  <script>document.documentElement.classList.add("js");</script>
+
+  <title>Lacy Lima · Nutricionista em Aracaju | Clínica, Esportiva e Saúde Intestinal</title>
+  <meta name="description" content="Nutricionista especialista em nutrição clínica, esportiva e saúde intestinal. Mais de 10 mil pacientes atendidos, com calorimetria indireta e polissonografia no acompanhamento.">
+  <meta name="author" content="Lacy Lima">
+  <link rel="canonical" href="https://lacylimanutri.com.br/">
+
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="pt_BR">
+  <meta property="og:title" content="Lacy Lima · Nutricionista">
+  <meta property="og:description" content="Ciência, estratégia e cuidado para quem busca saúde, performance e qualidade de vida.">
+  <meta property="og:image" content="assets/images/pages/home/retrato-close.webp">
+  <meta name="theme-color" content="#073b36">
+
+  <link rel="icon" href="assets/icons/favicon.png" type="image/png">
+  <link rel="apple-touch-icon" href="assets/icons/favicon.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <link rel="preload" as="image" href="assets/images/shared/assinatura-lacy.png">
+  <link rel="preload" as="image" href="assets/images/pages/home/hero-poster.webp">
+
+  <link rel="stylesheet" href="src/css/style.css">
+  <link rel="stylesheet" href="src/pages/home/home.css">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Nutritionist",
+    "name": "Lacy Lima Nutricionista",
+    "description": "Nutrição clínica, esportiva e saúde intestinal, com calorimetria indireta e polissonografia.",
+    "url": "https://lacylimanutri.com.br/",
+    "telephone": "+5579998116061",
+    "areaServed": "Aracaju, SE",
+    "sameAs": ["https://www.instagram.com/lacylima/"]
+  }
+  </script>
+</head>
+
+<body data-page="home" data-preload="ativo">
+
+  <!-- =====================================================
+       PRELOADER · a marca gira uma volta enquanto o nome dela
+       é descoberto da esquerda para a direita.
+       ===================================================== -->
+  <div class="preloader" role="status" aria-live="polite" aria-label="Carregando o site de Lacy Lima">
+    <div class="preloader__lockup">
+      <span class="preloader__simbolo" aria-hidden="true"></span>
+      <span class="preloader__nome">
+        <b>Lacy Lima</b>
+        <i>NUTRICIONISTA</i>
+      </span>
+    </div>
+  </div>
+
+  <!-- =====================================================
+       HEADER
+       ===================================================== -->
+  <header class="header" data-v style="--v0: .75; --vd: .13">
+    <div class="wrap header__interno">
+      <a class="marca header__marca" href="#inicio" aria-label="Lacy Lima, nutricionista, ir para o topo">
+        <span class="marca__simbolo" aria-hidden="true"></span>
+        <span class="marca__nome">Lacy Lima<small>NUTRICIONISTA</small></span>
+      </a>
+
+      <nav class="header__nav" aria-label="Navegação principal">
+        <a class="header__link" href="#sobre">Sobre</a>
+        <a class="header__link" href="#especialidades">Especialidades</a>
+        <a class="header__link" href="#exames">Exames</a>
+        <a class="header__link" href="#abordagem">Abordagem</a>
+        <a class="header__link" href="#conteudos">Conteúdos</a>
+      </nav>
+
+      <button class="header__menu-btn" type="button" aria-expanded="false" aria-controls="menu-mobile" aria-label="Abrir menu">
+        <i></i><i></i>
+      </button>
+    </div>
+  </header>
+
+  <nav class="menu-mobile" id="menu-mobile" aria-label="Navegação em telas pequenas">
+    <a href="#sobre">Sobre</a>
+    <a href="#especialidades">Especialidades</a>
+    <a href="#exames">Exames</a>
+    <a href="#abordagem">Abordagem</a>
+    <a href="#conteudos">Conteúdos</a>
+    <a href="#contato">Agendar consulta</a>
+    <p class="menu-mobile__rodape">Aracaju · Sergipe</p>
+  </nav>
+
+  <!-- =====================================================
+       CONTEÚDO
+       ===================================================== -->
+  <div class="pagina">
+    <main>
+
+      <!-- ============ 1. HERO ============ -->
+      <section class="hero" id="inicio">
+
+
+
+        <div class="wrap">
+          <div class="hero__grade">
+
+            <!-- Cada bloco declara em que fatia do vídeo ele entra:
+                 --v0 é o começo, --vd é a duração, ambos em fração
+                 dos 10 s da cena. O JS não sabe desses números. -->
+            <div class="hero__copia">
+              <p class="eyebrow hero__eyebrow" data-v style="--v0: .03; --vd: .10">
+                Nutrição clínica · esportiva · saúde intestinal
+              </p>
+
+              <h1 class="hero__titulo split--video" data-split
+                  style="--v0: .09; --vespalha: .40; --vchar: .09">
+                Nutrição para<br>transformar<br>a forma como<br>você vive.
+              </h1>
+
+              <p class="hero__texto" data-v style="--v0: .60; --vd: .13">
+                Ciência, estratégia e cuidado para quem busca saúde, performance
+                e qualidade de vida, sem soluções rasas nem atalhos.
+              </p>
+
+              <div class="hero__acoes" data-v style="--v0: .75; --vd: .13">
+                <a class="btn" href="#contato">
+                  Agendar consulta <span class="btn__seta">&rarr;</span>
+                </a>
+                <a class="link" href="#abordagem">
+                  Conheça minha abordagem <span>&mdash;</span>
+                </a>
+              </div>
+            </div>
+
+            <figure class="hero__video" data-anim="fade">
+              <span class="hero__quadro">
+                <img src="assets/images/pages/home/hero-poster.webp"
+                     alt="Lacy Lima, nutricionista, no consultório"
+                     width="608" height="1080" fetchpriority="high">
+                <video data-video-hero
+                       data-src="assets/videos/hero-lacy.mp4"
+                       poster="assets/images/pages/home/hero-poster.webp"
+                       muted playsinline preload="auto"
+                       aria-hidden="true"></video>
+              </span>
+            </figure>
+
+          </div>
+        </div>
+
+        <p class="hero__rolar" data-v style="--v0: .90; --vd: .10" aria-hidden="true">
+          Role <i></i>
+        </p>
+      </section>
+
+      <!-- ============ 2. FAIXA ============ -->
+      <div class="faixa marquee" aria-hidden="true">
+        <div class="marquee__faixa">
+          <span class="faixa__item">Ciência</span>
+          <span class="faixa__item">Estratégia</span>
+          <span class="faixa__item">Escuta</span>
+          <span class="faixa__item">Resultados reais</span>
+          <span class="faixa__item">Comida de verdade</span>
+          <span class="faixa__item">Mais de 10 mil pacientes</span>
+          <span class="faixa__item">Ciência</span>
+          <span class="faixa__item">Estratégia</span>
+          <span class="faixa__item">Escuta</span>
+          <span class="faixa__item">Resultados reais</span>
+          <span class="faixa__item">Comida de verdade</span>
+          <span class="faixa__item">Mais de 10 mil pacientes</span>
+        </div>
+      </div>
+
+      <!-- ============ 3. SOBRE ============ -->
+      <section class="sobre secao" id="sobre">
+        <div class="sobre__grade">
+
+          <figure class="sobre__figura parallax" data-parallax="sobre" data-anim="cai">
+            <img src="assets/images/pages/home/retrato-corpo.webp"
+                 alt="Lacy Lima de corpo inteiro, de blazer branco"
+                 width="1000" height="1500" loading="lazy">
+            <figcaption class="sobre__citacao" data-anim="sobe">
+              &ldquo;Disciplina<br>também<br>liberta.&rdquo;
+            </figcaption>
+          </figure>
+
+          <div class="sobre__copia" data-escalona>
+            <p class="eyebrow eyebrow--tinta" data-anim="desce">Sobre Lacy Lima</p>
+
+            <h2 class="sobre__titulo" data-split>
+              Antes da profissional que você vê hoje, existiu uma mulher que decidiu não desistir.
+            </h2>
+
+            <p data-anim="sobe">
+              Comecei atendendo numa sala minúscula, dentro de uma academia, onde as
+              baratas literalmente voavam pelo ar-condicionado, meu maior pavor.
+              Eu chegava cedo, limpava tudo, organizava, respirava fundo e atendia.
+            </p>
+
+            <p data-anim="sobe">
+              Muito antes de modismos, medicamentos da moda e promessas fáceis, sempre
+              fiz nutrição do jeito que acredito: comida de verdade, constância,
+              rotina, ética e propósito.
+            </p>
+
+            <p class="sobre__destaque" data-anim="sobe">
+              Se estou aqui, é porque aquela menina lá atrás não desistiu.
+            </p>
+
+            <div class="assinatura sobre__assinatura" data-anim="fade" role="img" aria-label="Assinatura de Lacy Lima">
+              <span class="assinatura__tinta"></span>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ============ 4. NÚMEROS ============ -->
+      <section class="numeros">
+        <div class="wrap">
+          <div class="numeros__grade" data-escalona>
+            <div class="numeros__intro">
+              <h3 data-split>Experiência que gera resultados reais.</h3>
+              <p data-anim="sobe">Mais do que números, são histórias de vidas transformadas.</p>
+            </div>
+            <div class="numero" data-anim="sobe"><strong>+10 mil</strong><span>pacientes atendidos</span></div>
+            <div class="numero" data-anim="sobe"><strong>04</strong><span>áreas de atuação</span></div>
+            <div class="numero" data-anim="sobe"><strong>02</strong><span>exames dentro do consultório</span></div>
+            <div class="numero" data-anim="sobe"><strong>01</strong><span>plano para cada pessoa</span></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =====================================================
+           5. ESPECIALIDADES · o acordeão 9:16 → 16:9
+           Fechada, cada foto é um retrato 9:16 recortado no
+           ponto em que a Lacy está. Aberta, ela volta ao 16:9
+           original, e o recorte migra junto para ela continuar
+           no centro da atenção.
+           ===================================================== -->
+      <section class="especialidades secao" id="especialidades">
+        <div class="wrap">
+
+          <header class="especialidades__cabecalho" data-escalona>
+            <div>
+              <p class="eyebrow" data-anim="desce">Especialidades</p>
+              <h2 class="especialidades__titulo" data-split>
+                Seu corpo não funciona por partes. Seu acompanhamento também não deveria.
+              </h2>
+            </div>
+            <p data-anim="sobe">
+              Quatro frentes que conversam entre si dentro do mesmo plano. Abra cada
+              uma para ver o que muda na prática.
+            </p>
+          </header>
+
+        </div>
+
+        <!-- A PILHA sai do .wrap de propósito: o palco ocupa a tela
+             inteira. Os cartões ficam um sobre o outro e o scroll
+             traz um de cada vez; quem prende o palco é position:
+             sticky, no CSS, e o JS só escreve --p. Sem JS ou com
+             movimento reduzido isto volta a ser uma lista. -->
+        <div class="pilha">
+      <article class="pilha__cartao" style="--i: 0">
+        <img src="assets/images/pages/home/especialidades/nutricao-clinica.webp"
+             alt="Lacy Lima explicando um plano alimentar para uma paciente"
+             width="1400" height="788" loading="lazy">
+        <div class="pilha__conteudo">
+          <span class="pilha__num">01</span>
+          <h3 class="pilha__titulo">Nutrição clínica</h3>
+          <p class="pilha__texto">Saúde, exames e rotina no mesmo plano. A conduta parte do que os seus resultados mostram, não do que está na moda.</p>
+          <ul class="pilha__lista">
+            <li>Exames laboratoriais</li>
+            <li>Sintomas e histórico</li>
+            <li>Ajuste contínuo</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="pilha__cartao" style="--i: 1">
+        <img src="assets/images/pages/home/especialidades/nutricao-esportiva.webp"
+             alt="Lacy Lima na academia, com uma mesa de alimentos para performance"
+             width="1400" height="788" loading="lazy">
+        <div class="pilha__conteudo">
+          <span class="pilha__num">02</span>
+          <h3 class="pilha__titulo">Nutrição esportiva</h3>
+          <p class="pilha__texto">Performance, recuperação e composição corporal. Treino e alimentação precisam falar a mesma língua para o corpo responder.</p>
+          <ul class="pilha__lista">
+            <li>Periodização alimentar</li>
+            <li>Carboidrato no contexto certo</li>
+            <li>Suplementação com critério</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="pilha__cartao" style="--i: 2">
+        <img src="assets/images/pages/home/especialidades/saude-intestinal.webp"
+             alt="Lacy Lima com um modelo anatômico do intestino"
+             width="1400" height="788" loading="lazy">
+        <div class="pilha__conteudo">
+          <span class="pilha__num">03</span>
+          <h3 class="pilha__titulo">Saúde intestinal</h3>
+          <p class="pilha__texto">Com formação em modulação intestinal. Inchaço, intestino preso e desconforto costumam ser sintoma, não o problema em si.</p>
+          <ul class="pilha__lista">
+            <li>Modulação intestinal</li>
+            <li>Investigação de sintomas</li>
+            <li>Reintrodução alimentar</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="pilha__cartao" style="--i: 3">
+        <img src="assets/images/pages/home/especialidades/composicao-metabolismo.webp"
+             alt="Lacy Lima apresentando um laudo de composição corporal"
+             width="1400" height="788" loading="lazy">
+        <div class="pilha__conteudo">
+          <span class="pilha__num">04</span>
+          <h3 class="pilha__titulo">Composição corporal e metabolismo</h3>
+          <p class="pilha__texto">Quanto o seu corpo gasta de verdade, medido em vez de estimado. É daí que sai a estratégia alimentar, e não de uma fórmula genérica.</p>
+          <ul class="pilha__lista">
+            <li>Calorimetria indireta</li>
+            <li>Avaliação corporal</li>
+            <li>Metas realistas</li>
+          </ul>
+        </div>
+      </article>
+
+      <!-- o tempo de tela do último cartão: ver a conta no CSS -->
+      <div class="pilha__fim" aria-hidden="true"></div>
+        </div>
+      </section>
+
+      <!-- =====================================================
+           6. EXAMES · conteúdo recuperado do site antigo
+           ===================================================== -->
+      <section class="exames secao" id="exames">
+        <div class="wrap">
+          <header data-escalona>
+            <p class="eyebrow eyebrow--tinta" data-anim="desce">Exames no consultório</p>
+            <h2 class="cuidado__titulo" data-split>
+              Medir antes de prescrever.
+            </h2>
+            <p data-anim="sobe" style="max-width: 52ch; margin-top: 1rem; color: var(--tinta-suave)">
+              Dois exames que tiram o achismo da conduta e mostram como o seu corpo
+              gasta energia e como você descansa.
+            </p>
+          </header>
+
+          <div class="exames__grade" data-escalona>
+
+            <article class="exame" data-anim="sobe">
+              <span class="exame__num">01</span>
+              <h3 class="exame__titulo">Calorimetria indireta</h3>
+              <p>
+                Mede o seu gasto energético real a partir do consumo de oxigênio e da
+                produção de gás carbônico. Em vez de estimar quantas calorias você
+                gasta por uma equação de tabela, o exame mostra o número do seu corpo.
+              </p>
+              <ul class="exame__itens">
+                <li>Taxa metabólica de repouso medida, não calculada</li>
+                <li>Base para a distribuição de carboidrato e proteína</li>
+                <li>Ajuda a entender platôs e reganho de peso</li>
+                <li>Exame rápido, sem agulha e sem desconforto</li>
+              </ul>
+              <a class="btn" data-wpp="Olá! Gostaria de mais informações sobre o exame de Calorimetria Indireta." href="#contato">
+                Falar sobre a calorimetria <span class="btn__seta">&rarr;</span>
+              </a>
+            </article>
+
+            <article class="exame" data-anim="sobe">
+              <span class="exame__num">02</span>
+              <h3 class="exame__titulo">Polissonografia</h3>
+              <p>
+                O exame do sono, feito na sua casa. Registra respiração, oxigenação e
+                qualidade do descanso durante a noite. Sono ruim atrapalha saciedade,
+                recuperação muscular e controle de glicemia, e quase sempre aparece
+                antes do resultado que não vem.
+              </p>
+              <ul class="exame__itens">
+                <li>Investigação de apneia e ronco</li>
+                <li>Oxigenação e eficiência do sono</li>
+                <li>Realizado no conforto da sua casa</li>
+                <li>Laudo integrado ao acompanhamento nutricional</li>
+              </ul>
+              <a class="btn" data-wpp="Olá! Gostaria de mais informações sobre o exame de Polissonografia." href="#contato">
+                Falar sobre a polissonografia <span class="btn__seta">&rarr;</span>
+              </a>
+            </article>
+
+        </div>
+        </div>
+      </section>
+
+      <!-- ============ 7. TREINO ============ -->
+      <section class="treino">
+        <div class="treino__grade" data-escalona>
+
+            <figure class="treino__figura" data-anim="cortina-lateral">
+              <img src="assets/images/pages/home/cuidado/lacy-detalhe.webp"
+                   alt="Lacy Lima em detalhe, durante um atendimento"
+                   width="496" height="878" loading="lazy">
+            </figure>
+
+            <div class="treino__copia">
+              <h2 class="treino__titulo" data-split>
+                Treinar mais nem sempre é a resposta.
+              </h2>
+              <p data-anim="sobe">
+                Quando a insulina permanece elevada com frequência, não adianta olhar
+                apenas para o treino e esperar que a composição corporal responda da
+                forma que você deseja.
+              </p>
+              <p data-anim="sobe">
+                A alimentação precisa acompanhar o objetivo. Quantidade de carboidrato,
+                distribuição ao longo do dia, consumo energético total e prática de
+                exercício precisam conversar entre si.
+              </p>
+              <p data-anim="sobe">
+                <strong>Não é sobre demonizar carboidrato.</strong> É sobre oferecer ao
+                corpo aquilo que ele precisa, na quantidade e no contexto adequados
+                para cada paciente.
+              </p>
+              <p class="treino__nota" data-anim="esquerda">
+                Treino e alimentação precisam trabalhar juntos.
+              </p>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ============ 8. CUIDADO ============ -->
+      <section class="cuidado" id="abordagem">
+        <div class="wrap">
+
+          <header class="cuidado__cabecalho" data-escalona>
+            <div>
+              <p class="eyebrow eyebrow--tinta" data-anim="desce">Abordagem</p>
+              <h2 class="cuidado__titulo" data-split>Cuidado também é escutar.</h2>
+            </div>
+            <div>
+              <p data-anim="sobe">
+                Cada pessoa chega ao consultório trazendo muito mais do que exames, peso
+                ou objetivos estéticos. Há uma história, uma rotina, limitações, desejos,
+                medos e possibilidades. O acompanhamento começa entendendo tudo isso.
+              </p>
+              <a class="btn" href="#contato" data-anim="sobe" style="margin-top: 1.4rem">
+                Conheça minha consulta <span class="btn__seta">&rarr;</span>
+              </a>
+            </div>
+          </header>
+
+          <div class="cuidado__galeria" data-escalona>
+            <figure class="cuidado__foto" data-anim="sobe-alto" style="--d: 0">
+              <img src="assets/images/pages/home/cuidado/cuidado-01.webp"
+                   alt="Momento de escuta durante a consulta" width="900" height="1599" loading="lazy">
+              <figcaption class="cuidado__legenda">Escuta</figcaption>
+            </figure>
+            <figure class="cuidado__foto" data-anim="sobe-alto" style="--d: .22">
+              <img src="assets/images/pages/home/cuidado/cuidado-02.webp"
+                   alt="Avaliação nutricional no consultório" width="900" height="1599" loading="lazy">
+              <figcaption class="cuidado__legenda">Avaliação</figcaption>
+            </figure>
+            <figure class="cuidado__foto" data-anim="sobe-alto" style="--d: .44">
+              <img src="assets/images/pages/home/cuidado/cuidado-03.webp"
+                   alt="Orientação e plano alimentar" width="900" height="1599" loading="lazy">
+              <figcaption class="cuidado__legenda">Estratégia</figcaption>
+            </figure>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ============ 9. DONA MIRIAM ============ -->
+      <section class="miriam">
+        <div class="miriam__grade">
+
+          <figure class="miriam__figura parallax" data-parallax="miriam" data-anim="cortina">
+            <img src="assets/images/pages/home/retrato-close.webp"
+                 alt="Lacy Lima em retrato aproximado" width="1100" height="1100" loading="lazy">
+          </figure>
+
+          <div class="miriam__copia" data-escalona>
+            <p class="eyebrow" data-anim="desce">Por que nutrição?</p>
+            <h2 class="miriam__titulo" data-split>Nutrir também é devolver autonomia.</h2>
+            <p data-anim="sobe">
+              Dona Miriam chegou ao meu consultório com mais de 90 anos, em uma cadeira
+              de rodas. Algum tempo depois, voltou caminhando com o auxílio de um
+              andador. Não houve fórmula mágica. Houve cuidado, acompanhamento,
+              movimento, alimentação e alguém que acreditou que ainda havia muito a
+              ser feito.
+            </p>
+            <p data-anim="sobe">
+              Nutrição não é apenas calorias, cardápios, restrições ou emagrecimento.
+            </p>
+            <ul class="miriam__lista" data-anim="sobe">
+              <li>É disposição.</li>
+              <li>É força.</li>
+              <li>É autonomia.</li>
+              <li>É qualidade de vida.</li>
+            </ul>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ============ 10. MÉTODO ============ -->
+      <section class="metodo secao">
+        <div class="wrap">
+          <p class="eyebrow eyebrow--tinta" data-anim="desce">Como funciona</p>
+
+          <div class="metodo__grade" data-escalona>
+            <div class="metodo__intro">
+              <h2 class="metodo__titulo-scrub" data-split="sorteio">
+                Um acompanhamento feito para a sua realidade.
+              </h2>
+            </div>
+            <div class="passo" data-anim="sobe">
+              <span class="passo__num">01</span>
+              <h3>Entender</h3>
+              <p>Histórico, rotina, exames, sintomas e objetivos.</p>
+            </div>
+            <div class="passo" data-anim="sobe">
+              <span class="passo__num">02</span>
+              <h3>Medir</h3>
+              <p>Calorimetria, composição corporal e qualidade do sono.</p>
+            </div>
+            <div class="passo" data-anim="sobe">
+              <span class="passo__num">03</span>
+              <h3>Construir</h3>
+              <p>Estratégia aplicável à sua vida real, não à ideal.</p>
+            </div>
+            <div class="passo" data-anim="sobe">
+              <span class="passo__num">04</span>
+              <h3>Acompanhar</h3>
+              <p>Avaliar resultados, ajustar a rota e evoluir.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ 11. MISSÃO ============ -->
+      <section class="missao">
+        <div class="wrap">
+          <div class="missao__grade" data-escalona>
+
+            <div class="missao__copia">
+              <p class="eyebrow" data-anim="desce">Minha missão</p>
+              <h2 class="missao__titulo" data-split>
+                Eu não escolhi a Nutrição apenas como profissão.
+              </h2>
+              <p data-anim="sobe">
+                Ela se tornou parte da minha missão. Sou profundamente grata por tudo
+                que a Nutrição me dá e, principalmente, por tudo que ela me devolve.
+                Já existiram dias difíceis, quedas e recomeços. Mas uma coisa eu
+                aprendi: só não consegue quem desiste.
+              </p>
+              <p class="missao__frase" data-anim="esquerda">Persistir também faz parte.</p>
+              <div class="assinatura missao__assinatura" data-anim="fade" role="img" aria-label="Assinatura de Lacy Lima">
+                <span class="assinatura__tinta"></span>
+              </div>
+            </div>
+
+            <figure class="missao__figura parallax" data-parallax="missao" data-anim="levanta">
+              <img src="assets/images/pages/home/retrato-sorriso.webp"
+                   alt="Lacy Lima sorrindo, de blazer branco" width="900" height="1599" loading="lazy">
+            </figure>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ 12. CONTEÚDOS ============ -->
+      <section class="conteudos secao" id="conteudos">
+        <div class="wrap">
+          <div class="conteudos__grade" data-escalona>
+
+            <div class="conteudos__copia">
+              <p class="eyebrow eyebrow--tinta" data-anim="desce">Conteúdos</p>
+              <h2 class="conteudos__titulo" data-split>Nutrição sem simplificações.</h2>
+              <p data-anim="sobe">
+                Acompanhe no Instagram conteúdos sobre saúde, rotina, ciência e vida real.
+              </p>
+              <a class="btn btn--tinta" href="https://www.instagram.com/lacylima/"
+                 target="_blank" rel="noopener" data-anim="sobe">
+                Seguir no Instagram <span class="btn__seta">&rarr;</span>
+              </a>
+            </div>
+
+            <div class="conteudos__mosaico">
+              <a class="conteudos__item" href="https://www.instagram.com/lacylima/" target="_blank" rel="noopener" data-anim="escala">
+                <img src="assets/images/pages/home/instagram/instagram-1.webp"
+                     alt="Publicação de Lacy Lima no Instagram" width="280" height="377" loading="lazy">
+              </a>
+              <a class="conteudos__item" href="https://www.instagram.com/lacylima/" target="_blank" rel="noopener" data-anim="escala">
+                <img src="assets/images/pages/home/instagram/instagram-2.webp"
+                     alt="Publicação de Lacy Lima no Instagram" width="280" height="377" loading="lazy">
+              </a>
+              <a class="conteudos__item" href="https://www.instagram.com/lacylima/" target="_blank" rel="noopener" data-anim="escala">
+                <img src="assets/images/pages/home/instagram/instagram-3.webp"
+                     alt="Publicação de Lacy Lima no Instagram" width="280" height="377" loading="lazy">
+              </a>
+              <a class="conteudos__item" href="https://www.instagram.com/lacylima/" target="_blank" rel="noopener" data-anim="escala">
+                <img src="assets/images/pages/home/instagram/instagram-4.webp"
+                     alt="Publicação de Lacy Lima no Instagram" width="280" height="377" loading="lazy">
+              </a>
+              <a class="conteudos__item" href="https://www.instagram.com/lacylima/" target="_blank" rel="noopener" data-anim="escala">
+                <img src="assets/images/pages/home/instagram/instagram-5.webp"
+                     alt="Publicação de Lacy Lima no Instagram" width="280" height="377" loading="lazy">
+              </a>
+              <a class="conteudos__item" href="https://www.instagram.com/lacylima/" target="_blank" rel="noopener" data-anim="escala">
+                <img src="assets/images/pages/home/instagram/instagram-6.webp"
+                     alt="Publicação de Lacy Lima no Instagram" width="280" height="377" loading="lazy">
+              </a>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ 13. CTA ============ -->
+      <section class="cta secao" id="contato">
+        <div class="wrap">
+          <div class="cta__grade" data-escalona>
+            <h2 class="cta__titulo" data-split>Seu próximo passo pode começar agora.</h2>
+            <p data-anim="sobe">
+              Se você busca um acompanhamento sério, individualizado e baseado em
+              ciência, vamos conversar.
+            </p>
+            <a class="btn" data-wpp="Olá! Gostaria de mais informações sobre a consulta da Nutri Lacy Lima."
+               href="https://api.whatsapp.com/send/?phone=5579998116061"
+               target="_blank" rel="noopener" data-anim="sobe">
+              Agendar minha consulta <span class="btn__seta">&rarr;</span>
+            </a>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- ============ FOOTER ============ -->
+    <footer class="footer">
+      <div class="wrap">
+        <div class="footer__topo" data-escalona>
+
+          <div class="footer__col footer__col--marca">
+            <span class="marca footer__marca" data-anim="fade">
+              <span class="marca__simbolo" aria-hidden="true"></span>
+              <span class="marca__nome">Lacy Lima<small>NUTRICIONISTA</small></span>
+            </span>
+            <p class="footer__frase" data-anim="sobe">
+              Ciência, escuta e cuidado em todas as etapas.
+            </p>
+            <div class="assinatura footer__assinatura" data-anim="fade" role="img" aria-label="Assinatura de Lacy Lima">
+              <span class="assinatura__tinta"></span>
+            </div>
+          </div>
+
+          <div class="footer__col" data-anim="sobe">
+            <h4>Navegue</h4>
+            <nav class="footer__lista" aria-label="Rodapé">
+              <a href="#sobre">Sobre</a>
+              <a href="#especialidades">Especialidades</a>
+              <a href="#exames">Exames</a>
+              <a href="#abordagem">Abordagem</a>
+              <a href="#conteudos">Conteúdos</a>
+            </nav>
+          </div>
+
+          <div class="footer__col" data-anim="sobe">
+            <h4>Contato</h4>
+            <div class="footer__lista">
+              <a href="https://api.whatsapp.com/send/?phone=5579998116061"
+                 data-wpp="Olá! Gostaria de mais informações sobre a consulta da Nutri Lacy Lima."
+                 target="_blank" rel="noopener">WhatsApp</a>
+              <a href="https://www.instagram.com/lacylima/" target="_blank" rel="noopener">Instagram</a>
+              <a href="src/pages/privacidade/privacidade.html">Política de privacidade</a>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="footer__base">
+          <p>&copy; <span data-ano>2026</span> Lacy Lima · Todos os direitos reservados</p>
+          <p>Aracaju · Sergipe</p>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <!-- GSAP e ScrollTrigger primeiro; o módulo do projeto depois -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/ScrollTrigger.min.js" defer></script>
+  <script type="module" src="src/js/main.js"></script>
+</body>
+</html>

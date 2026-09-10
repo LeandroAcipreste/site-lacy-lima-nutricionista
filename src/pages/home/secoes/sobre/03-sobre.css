@@ -1,0 +1,102 @@
+/* =========================================================
+   3. SOBRE — retrato de corpo inteiro + a história
+   ========================================================= */
+
+.sobre { background: var(--creme); padding-block: 0; }
+
+.sobre__grade {
+  display: grid;
+  grid-template-columns: minmax(0, .92fr) minmax(0, 1.08fr);
+  align-items: stretch;
+}
+
+.sobre__figura {
+  position: relative;
+  min-height: clamp(420px, 62vw, 780px);
+  overflow: hidden;
+  background: var(--creme-2);
+}
+
+.sobre__figura img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* a cabeça dela começa em 7,6% da foto, medido. Com o parallax
+     inteiro a folga no desktop era de 0,4% — tecnicamente cortando
+     no extremo do deslocamento. Meio curso e enquadramento mais
+     alto resolvem sem mudar a leitura da dobra. */
+  object-position: center 14%;
+  --py-fator: .5;
+}
+
+.sobre__figura::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(200deg, transparent 46%, rgba(7, 59, 54, .5) 100%);
+}
+
+.sobre__citacao {
+  position: absolute;
+  z-index: 2;
+  left: clamp(1.4rem, 4vw, 3rem);
+  bottom: clamp(1.6rem, 5vw, 3.4rem);
+  font-family: var(--fonte-display);
+  font-size: clamp(1.6rem, 1rem + 2.2vw, 2.7rem);
+  line-height: 1.06;
+  color: var(--creme);
+  transform: rotate(-4.5deg);
+  text-shadow: 0 3px 18px rgba(0, 0, 0, .4);
+}
+
+.sobre__copia {
+  padding: clamp(3rem, 7vw, 6.5rem) clamp(1.4rem, 5vw, 5rem);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: clamp(1rem, 2vw, 1.5rem);
+}
+
+.sobre__titulo { font-size: var(--t-secao); max-width: 17ch; }
+
+.sobre__copia p { max-width: 58ch; color: var(--tinta-suave); }
+
+.sobre__destaque {
+  font-family: var(--fonte-display);
+  font-size: clamp(1.35rem, 1rem + 1.3vw, 2rem);
+  line-height: 1.15;
+  color: var(--ouro);
+  max-width: 24ch;
+}
+
+.sobre__assinatura {
+  --ass-larg: clamp(160px, 18vw, 230px);
+  color: var(--tinta);
+  margin-top: .6rem;
+}
+
+/* --- quebras --- */
+
+@media (max-width: 1023px) {
+  .sobre__grade { grid-template-columns: 1fr; }
+
+  /* A CABEÇA DELA ESTAVA SENDO CORTADA AQUI.
+
+     A foto é 1000x1500 (Ri = 0,667) e a caixa no celular fica
+     390x420 (Rc = 0,929), então fv = 0,718. Só que o parallax
+     aplica scale(1.12) e desloca ±35 px, e isso fecha a faixa para
+     ~10,1%–74,1% no pior momento da rolagem. A cabeça dela começa
+     em 7,6%, medido na foto: cortava.
+
+     Aqui o parallax entra com um terço do curso e sem zoom, e o
+     enquadramento sobe para 10%. Com fv = 0,718 e P = 0,10 a faixa
+     fica 2,8%–74,6%, com quase 5% de folga acima da cabeça mesmo
+     no extremo do deslocamento. */
+  .sobre__figura > img {
+    --py-fator: .34;
+    --py-zoom: 1;
+    object-position: center 10%;
+  }
+}

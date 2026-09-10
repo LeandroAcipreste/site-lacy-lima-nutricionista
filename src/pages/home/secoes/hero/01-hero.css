@@ -1,0 +1,245 @@
+/* =========================================================
+   1. HERO — o vídeo dela é vertical (720x1280), então ele
+   ocupa um painel 9:16 à direita em vez de virar fundo
+   esticado. No mobile ele vira o topo da dobra.
+   ========================================================= */
+
+.hero {
+  position: relative;
+  min-height: 100svh;
+  display: grid;
+  align-items: center;
+  /* O fundo da dobra é a cor do ciclorama do vídeo, medida na
+     borda esquerda do painel. Não há imagem: a continuidade é a
+     mesma cor dos dois lados da junção. */
+  background: var(--video-cenario);
+  color: var(--creme);
+  padding-top: calc(var(--header-h) + clamp(1rem, 4vh, 3rem));
+  padding-bottom: clamp(2rem, 6vh, 4rem);
+  overflow: hidden;
+}
+
+/* uma coluna só: o painel é absoluto e saiu do fluxo. O texto
+   fica preso a 58% para nunca esbarrar nele. */
+.hero__grade {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-items: center;
+  width: 100%;
+}
+
+.hero__copia { max-width: min(660px, 58%); }
+
+/* o --ouro fecha 3,4:1 sobre o verde do vídeo; o claro sobe para 7,1:1 */
+.hero__eyebrow {
+  margin-bottom: clamp(1.1rem, 2.5vw, 1.9rem);
+  color: var(--ouro-claro);
+}
+
+.hero__titulo {
+  font-size: var(--t-hero);
+  letter-spacing: -.04em;
+}
+
+.hero__titulo em {
+  font-style: normal;
+  color: var(--ouro-claro);
+}
+
+.hero__texto {
+  max-width: 46ch;
+  margin: clamp(1.4rem, 3vw, 2.2rem) 0 clamp(1.8rem, 3.5vw, 2.6rem);
+  color: rgba(242, 238, 230, .78);
+}
+
+/* o CTA da hero usa o mesmo desenho do botão do header:
+   vazado, traço fino, e o ouro sobe por trás no hover */
+.hero__acoes .btn {
+  background: transparent;
+  border: 1px solid rgba(242, 238, 230, .55);
+  color: var(--creme);
+  padding: .95rem 1.5rem;
+  font-size: .84rem;
+  letter-spacing: .04em;
+}
+.hero__acoes .btn::before { background: var(--ouro); }
+.hero__acoes .btn:hover,
+.hero__acoes .btn:focus-visible {
+  border-color: var(--ouro);
+  color: var(--creme);
+}
+
+.hero__acoes {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: clamp(1rem, 2.5vw, 2rem);
+}
+
+/* --- o painel de vídeo ---
+   Coluna de altura cheia, encostada na borda direita da tela.
+
+   Por que encostada: a poltrona toca o limite direito do quadro
+   do vídeo (sobram 2% de fundo, medido). Ela JÁ vem cortada da
+   origem, e nenhuma máscara inventa os pixels que faltam.
+   Esmaecer ali derrete a poltrona; não esmaecer deixa um corte
+   reto no meio de um fundo contínuo. A única borda que
+   justifica um corte é a da própria tela.
+
+   Por que de altura cheia: foi o erro da tentativa anterior.
+   Um painel pequeno encostado na direita virava um retângulo
+   no canto, com um vazio enorme ao lado. Ocupando a altura
+   inteira ele vira coluna, e o vazio deixa de existir. */
+.hero__video {
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  right: 0;
+  height: 100%;
+  aspect-ratio: 9 / 16;
+  width: auto;
+}
+
+.hero__quadro {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.hero__quadro > img,
+.hero__quadro > video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* o pôster segura o espaço; o vídeo entra por cima quando puder tocar */
+.hero__video video {
+  opacity: 0;
+  transition: opacity 1s var(--ease-suave);
+}
+.hero__video video.is-pronto { opacity: 1; }
+
+/* O PÔSTER PRECISA SAIR DEPOIS QUE O VÍDEO ENTRA.
+   Os dois ficam empilhados e os dois levam a mesma máscara de
+   borda. Onde a máscara está a 50%, o pôster ainda contribui
+   com 25% da composição, e como ele é um quadro parado do
+   começo, aparecia um fantasma dela na posição inicial em cima
+   e embaixo do vídeo. Apagando o pôster, some a sombra. */
+.hero__quadro.is-pronto img {
+  opacity: 0;
+  transition: opacity 1s var(--ease-suave) .35s;
+}
+
+.hero__video::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  /* nenhum véu no desktop: o painel tem de ser indistinguível
+     do fundo, e todo degradê aqui desenharia a borda dele */
+  background: none;
+  pointer-events: none;
+}
+
+/* a moldura saiu: ela desenhava exatamente a borda que o
+   alinhamento parede/piso existe para apagar */
+.hero__moldura { display: none; }
+
+/* o texto vem depois do cenário na pintura, então precisa subir */
+.hero__copia { position: relative; z-index: 2; }
+
+.hero > .wrap { position: static; }
+
+/* --- indicador de rolagem --- */
+
+.hero__rolar {
+  position: absolute;
+  z-index: 3;
+  left: 50%;
+  bottom: 1.4rem;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .6rem;
+  font-size: .6rem;
+  letter-spacing: .34em;
+  text-transform: uppercase;
+  color: rgba(242, 238, 230, .55);
+}
+
+.hero__rolar i {
+  width: 1px;
+  height: 44px;
+  background: linear-gradient(180deg, var(--ouro-claro), transparent);
+  transform-origin: top center;
+  animation: rolar-desce 2.4s var(--ease-suave) infinite;
+}
+
+@keyframes rolar-desce {
+  0%   { transform: scaleY(0); opacity: 0; }
+  35%  { opacity: 1; }
+  60%  { transform: scaleY(1); }
+  100% { transform: scaleY(1) translateY(44px); opacity: 0; }
+}
+
+/* --- quebras da hero --- */
+
+@media (max-width: 1023px) {
+  .hero { min-height: auto; }
+  .hero__grade { grid-template-columns: 1fr; gap: clamp(2rem, 6vw, 3rem); }
+  .hero__video { margin-inline: auto; height: min(62svh, 520px); }
+  .hero__rolar { display: none; }
+}
+
+/* --- no celular o vídeo vira o fundo da dobra ---
+   Empilhado, ele caía abaixo da linha d'água e ninguém via as
+   palavras entrarem enquanto ele roda, que é o ponto da abertura.
+   Com .wrap em static, o painel se posiciona contra a .hero e
+   cobre também o padding dela. */
+@media (max-width: 767px) {
+  .hero { min-height: 100svh; }
+
+  .hero > .wrap { position: static; }
+
+  /* aqui o vídeo é a dobra inteira: não existe borda para
+     esconder, e mascarar só abriria um vinhete estranho */
+  .hero__video,
+  .hero__quadro,
+  .hero__video video,
+  .hero__video img {
+    -webkit-mask-image: none;
+            mask-image: none;
+  }
+
+  .hero__video {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    aspect-ratio: auto;
+    margin: 0;
+  }
+
+  /* o véu escurece a partir da metade: o título é creme e cai
+     em cima do vestido, que também é creme */
+  .hero__video::after {
+    background: linear-gradient(180deg,
+        rgba(7, 31, 25, .62) 0%,
+        rgba(7, 31, 25, .3) 20%,
+        rgba(7, 31, 25, .72) 48%,
+        rgba(7, 31, 25, .92) 76%,
+        rgba(7, 31, 25, .97) 100%);
+  }
+
+  .hero__copia { position: relative; z-index: 2; }
+
+  /* a moldura pertence ao painel, não ao fundo */
+  .hero__moldura { display: none; }
+}

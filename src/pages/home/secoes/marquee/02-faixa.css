@@ -1,0 +1,30 @@
+/* =========================================================
+   2. FAIXA — os pilares dela correndo em marquee
+   ========================================================= */
+
+.faixa {
+  background: var(--verde-profundo);
+  color: rgba(242, 238, 230, .55);
+  padding-block: 1.1rem;
+  border-block: 1px solid var(--linha-clara);
+}
+
+.faixa__item {
+  display: inline-flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding-right: 3rem;
+  font-size: var(--t-mini);
+  letter-spacing: .32em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.faixa__item::after {
+  content: "";
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--ouro);
+  flex: none;
+}

@@ -1,0 +1,93 @@
+/* =========================================================
+   8. CUIDADO — três fotos verticais em ritmo escalonado
+   ========================================================= */
+
+.cuidado { background: var(--creme); padding-block: 0 var(--gap-dobra); }
+
+.cuidado__cabecalho {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: clamp(1.5rem, 4vw, 4rem);
+  align-items: end;
+  padding-top: var(--gap-dobra);
+  border-top: 1px solid var(--linha);
+  margin-bottom: clamp(2rem, 4vw, 3.2rem);
+}
+
+.cuidado__titulo { font-size: var(--t-secao); max-width: 12ch; margin-top: 1rem; }
+.cuidado__cabecalho p { color: var(--tinta-suave); max-width: 48ch; }
+
+.cuidado__galeria {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(.5rem, 1.4vw, 1.1rem);
+  align-items: start;
+}
+
+.cuidado__foto {
+  position: relative;
+  aspect-ratio: 9 / 14;
+  overflow: hidden;
+  background: var(--creme-2);
+}
+
+.cuidado__foto img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 1.3s var(--ease-elast), filter .6s var(--ease-suave);
+}
+.cuidado__foto:hover img { transform: scale(1.05); filter: brightness(1.03); }
+
+.cuidado__foto:nth-child(2) { margin-top: clamp(1rem, 3vw, 3rem); }
+.cuidado__foto:nth-child(3) { margin-top: clamp(2rem, 6vw, 6rem); }
+
+.cuidado__legenda {
+  position: absolute;
+  z-index: 2;
+  left: 1rem;
+  bottom: 1rem;
+  font-size: var(--t-mini);
+  letter-spacing: .24em;
+  text-transform: uppercase;
+  color: var(--creme);
+  text-shadow: 0 1px 8px rgba(0, 0, 0, .55);
+}
+
+/* --- quebras --- */
+
+@media (max-width: 1023px) {
+  .cuidado__cabecalho { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 767px) {
+  .cuidado__galeria { grid-template-columns: 1fr 1fr; }
+
+  /* A TERCEIRA FOTO CORTAVA O ROSTO DA LACY, e a conta diz por quê.
+
+     A foto é 900x1600 (proporção 0,5625) e aqui o cartão vira
+     16/11 (1,4545). Com object-fit: cover a fração da ALTURA que
+     aparece é
+
+       f = 0,5625 / 1,4545 = 0,387
+
+     ou seja, só 38,7% da foto cabe. Com o object-position padrão
+     (50%) a faixa visível é de 30,7% a 69,3% da imagem — e o rosto
+     dela está entre 22% e 35%, medido na foto. Ficava acima da
+     faixa: cortado.
+
+     A faixa visível vale [P·(1−f), P·(1−f)+f]. Para o topo da
+     cabeça (22%) entrar é preciso P ≤ 22/61,3 = 35,9%. Com P = 18%
+     a faixa fica de 11,0% a 49,7%, o que deixa 11% de folga acima
+     da cabeça e 14,7% abaixo do queixo.
+
+     As outras duas não precisam disso: no cartão 9/14 delas
+     f = 0,875, a faixa vai de 6% a 94%, e os rostos estão entre
+     33% e 52%. */
+  .cuidado__foto:nth-child(3) {
+    grid-column: 1 / -1;
+    aspect-ratio: 16 / 11;
+    margin-top: 0;
+  }
+  .cuidado__foto:nth-child(3) img { object-position: 50% 18%; }
+}

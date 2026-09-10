@@ -1,0 +1,52 @@
+/* =========================================================
+   home.css — ÍNDICE das dobras da página inicial.
+
+
+
+   | classe no HTML             | arquivo                    |
+   |----------------------------|----------------------------|
+   | .hero__*                   | secoes/hero/               |
+   | .faixa__*                  | secoes/marquee/            |
+   | .sobre__*                  | secoes/sobre/              |
+   | .numeros__*  .numero       | secoes/numeros/            |
+   | .especialidades__* .pilha__*| secoes/especialidades/    |
+   | .exames__*  .exame__*      | secoes/exames/             |
+   | .treino__*                 | secoes/treino/             |
+   | .cuidado__*                | secoes/cuidado/            |
+   | .miriam__*                 | secoes/miriam/             |
+   | .metodo__*  .passo__*      | secoes/metodo/             |
+   | .missao__*                 | secoes/missao/             |
+   | .conteudos__*              | secoes/conteudos/          |
+   | .cta__*                    | secoes/cta/                |
+
+   A pasta leva o nome da dobra e o arquivo mantém o número, que é
+   a posição dela na página. O CSS e o JS de uma dobra ficam na
+   MESMA pasta: tudo daquela seção num lugar só.
+
+   Cada arquivo é AUTOSSUFICIENTE: leva junto as próprias
+   quebras de layout (1023 / 767 / 479px), no fim dele, do maior
+   para o menor. Antes elas moravam todas num bloco "RESPONSIVO"
+   no fim de um arquivo de 1075 linhas, e o mobile de uma dobra
+   ficava a centenas de linhas do desktop dela.
+
+   O que NÃO está aqui, porque vale para o site inteiro:
+   botão, header, footer, preloader e o vocabulário de animação
+   estão em src/css/ e entram por src/css/style.css.
+
+   A ORDEM ABAIXO É A CASCATA. Não reordene por gosto: quem vem
+   depois ganha em caso de empate de especificidade.
+   ========================================================= */
+
+@import "secoes/hero/01-hero.css";
+@import "secoes/marquee/02-faixa.css";
+@import "secoes/sobre/03-sobre.css";
+@import "secoes/numeros/04-numeros.css";
+@import "secoes/especialidades/05-especialidades.css";
+@import "secoes/exames/06-exames.css";
+@import "secoes/treino/07-treino.css";
+@import "secoes/cuidado/08-cuidado.css";
+@import "secoes/miriam/09-miriam.css";
+@import "secoes/metodo/10-metodo.css";
+@import "secoes/missao/11-missao.css";
+@import "secoes/conteudos/12-conteudos.css";
+@import "secoes/cta/13-cta.css";

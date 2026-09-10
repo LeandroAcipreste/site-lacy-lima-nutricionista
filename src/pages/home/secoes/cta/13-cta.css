@@ -1,0 +1,25 @@
+/* =========================================================
+   13. CTA FINAL
+   ========================================================= */
+
+.cta { background: var(--verde-marca); color: var(--creme); }
+
+.cta__grade {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, .8fr) auto;
+  gap: clamp(1.5rem, 4vw, 3.5rem);
+  align-items: center;
+}
+
+.cta__titulo { font-size: clamp(2rem, 1.3rem + 2.6vw, 3.6rem); max-width: 14ch; }
+.cta__grade p { color: rgba(242, 238, 230, .84); max-width: 42ch; }
+.cta .btn { background: var(--creme); color: var(--verde-profundo); }
+.cta .btn::before { background: var(--verde-profundo); }
+.cta .btn:hover, .cta .btn:focus-visible { color: var(--creme); }
+
+/* --- quebras --- */
+
+@media (max-width: 1023px) {
+  .cta__grade { grid-template-columns: 1fr; }
+  .cta .btn { justify-self: start; }
+}

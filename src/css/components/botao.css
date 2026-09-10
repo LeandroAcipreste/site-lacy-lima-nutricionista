@@ -1,0 +1,90 @@
+/* =========================================================
+   botao.css — microinteração em todo elemento clicável
+   ========================================================= */
+
+.btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 1.05rem;
+  padding: 1.05rem 1.6rem;
+  font-family: var(--fonte-texto);
+  font-size: .9rem;
+  font-weight: 500;
+  letter-spacing: .02em;
+  color: var(--creme);
+  background: var(--verde-marca);
+  overflow: hidden;
+  isolation: isolate;
+  transition: color var(--dur-curta) var(--ease-suave),
+              transform var(--dur-curta) var(--ease-suave);
+}
+
+/* a cor de hover sobe por baixo do texto, em vez de trocar de uma vez */
+.btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--ouro);
+  transform: translateY(101%);
+  transition: transform .45s var(--ease-elast);
+}
+
+.btn:hover,
+.btn:focus-visible { transform: translateY(-2px); }
+.btn:hover::before,
+.btn:focus-visible::before { transform: translateY(0); }
+.btn:active { transform: translateY(0) scale(.985); }
+
+.btn__seta {
+  display: inline-block;
+  transition: transform .4s var(--ease-elast);
+}
+.btn:hover .btn__seta { transform: translateX(5px); }
+
+/* variante vazada, para fundo escuro */
+.btn--vazado {
+  background: transparent;
+  border: 1px solid var(--linha-clara);
+  color: var(--creme);
+}
+.btn--vazado::before { background: var(--creme); }
+.btn--vazado:hover,
+.btn--vazado:focus-visible { color: var(--verde-profundo); }
+
+/* variante clara, para fundo creme */
+.btn--tinta { background: var(--tinta); }
+
+/* --- link com sublinhado que cresce --- */
+
+.link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: .7rem;
+  font-size: .88rem;
+  padding-bottom: 3px;
+}
+
+.link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: right center;
+  transition: transform .45s var(--ease-elast);
+}
+
+.link:hover::after,
+.link:focus-visible::after {
+  transform: scaleX(1);
+  transform-origin: left center;
+}
+
+.link span { transition: transform .4s var(--ease-elast); }
+.link:hover span { transform: translateX(4px); }

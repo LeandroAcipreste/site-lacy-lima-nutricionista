@@ -1,0 +1,15 @@
+/* =========================================================
+   style.css — só importa, na ordem de dependência:
+   reset zera → variables define → base aplica →
+   componentes usam os tokens. O CSS de cada página entra
+   depois deste arquivo, no <head> da própria página.
+   ========================================================= */
+
+@import "reset.css";
+@import "variables.css";
+@import "base.css";
+@import "components/preloader.css";
+@import "components/animacoes.css";
+@import "components/botao.css";
+@import "components/header.css";
+@import "components/footer.css";

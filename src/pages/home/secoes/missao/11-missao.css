@@ -1,0 +1,81 @@
+/* =========================================================
+   11. MISSÃO
+   ========================================================= */
+
+.missao { background: var(--preto); color: var(--creme); padding-block: 0; }
+
+.missao__grade {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, .85fr);
+  align-items: center;
+  gap: clamp(2rem, 5vw, 5rem);
+  padding-block: var(--gap-dobra);
+}
+
+.missao__titulo { font-size: var(--t-secao); max-width: 16ch; }
+.missao__copia { display: flex; flex-direction: column; gap: 1.2rem; }
+.missao__copia p { color: rgba(242, 238, 230, .76); max-width: 56ch; }
+
+.missao__frase {
+  font-family: var(--fonte-display);
+  font-size: clamp(1.5rem, 1rem + 1.8vw, 2.4rem);
+  line-height: 1.1;
+  color: var(--ouro-claro);
+  max-width: 20ch;
+}
+
+.missao__assinatura {
+  --ass-larg: clamp(170px, 18vw, 240px);
+  color: var(--creme);
+  margin-top: .4rem;
+}
+
+.missao__figura {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  background: #141310;
+}
+.missao__figura img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* a cabeça dela começa em 11% da foto, medido; o parallax sem
+     zoom e com meio curso deixa folga suficiente acima */
+  object-position: center 12%;
+  --py-fator: .5;
+  --py-zoom: 1;
+}
+
+/* --- quebras --- */
+
+@media (max-width: 1023px) {
+  .missao__grade { grid-template-columns: 1fr; }
+  /* NO MOBILE A FOTO ERA UM RECORTE FECHADO DEMAIS.
+
+     A imagem é 900x1600 (Ri = 0,5625). Com o cartão em 16/10
+     (Rc = 1,6) e object-fit: cover, a fração da ALTURA visível é
+
+       fv = Ri / Rc = 0,5625 / 1,6 = 0,352
+
+     só 35% da foto. Medido na imagem: a cabeça dela começa em 11%
+     e o queixo está em 45% — o recorte cortava logo abaixo do
+     queixo.
+
+     Para mostrar de ~7% a ~77% é preciso fv ≈ 0,70, e
+     Rc = Ri / fv = 0,5625 / 0,70 = 0,80, que é 4/5. O object-y sai
+     de P = 7 / (100 − 70) = 24%.
+
+     E a caixa fica mais ESTREITA que a tela: assim a foto ocupa
+     menos e mostra mais, que é o pedido. */
+  .missao__figura {
+    order: -1;
+    aspect-ratio: 4 / 5;
+    width: min(320px, 82%);
+    margin-inline: auto;
+  }
+  .missao__figura img {
+    object-position: center 14%;
+    --py-fator: .34;
+  }
+}

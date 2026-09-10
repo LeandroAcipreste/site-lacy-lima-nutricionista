@@ -1,0 +1,67 @@
+/* =========================================================
+   7. TREINO / INSULINA
+   ========================================================= */
+
+/* A dobra sangra de ponta a ponta, no mesmo desenho da
+   "Sobre": a foto ocupa a altura inteira em vez de flutuar
+   centralizada. Com align-items:center e aspect-ratio fixo
+   sobravam 141px de creme abaixo da foto e 224px abaixo do
+   texto, e a dobra parecia meio vazia. */
+
+.treino { background: var(--creme); padding-block: 0; }
+
+.treino__grade {
+  display: grid;
+  grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr);
+  align-items: stretch;
+  border-top: 1px solid var(--linha);
+}
+
+.treino__figura {
+  position: relative;
+  min-height: clamp(430px, 52vw, 760px);
+  overflow: hidden;
+  background: var(--creme-2);
+  margin: 0;
+}
+
+/* absoluta de propósito: com o pai em min-height + stretch, um
+   height:100% cai para a altura intrínseca da foto (1083px aqui)
+   e é a imagem que passa a esticar a dobra inteira */
+.treino__figura img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 26%;
+}
+
+.treino__copia {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: clamp(1rem, 2vw, 1.4rem);
+  padding: clamp(3rem, 7vw, 6.5rem) clamp(1.4rem, 5vw, 5rem);
+}
+
+.treino__titulo { font-size: var(--t-secao); max-width: 15ch; }
+.treino__copia p { max-width: 60ch; color: var(--tinta-suave); }
+.treino__copia strong { color: var(--tinta); font-weight: 500; }
+
+.treino__nota {
+  margin-top: .6rem;
+  padding-left: 1.4rem;
+  border-left: 1px solid var(--ouro);
+  font-family: var(--fonte-display);
+  font-size: clamp(1.25rem, 1rem + 1vw, 1.8rem);
+  line-height: 1.16;
+  color: var(--tinta);
+  max-width: 24ch;
+}
+
+/* --- quebras --- */
+
+@media (max-width: 1023px) {
+  .treino__grade { grid-template-columns: 1fr; }
+}

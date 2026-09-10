@@ -1,0 +1,171 @@
+/* =========================================================
+   base.css — tipografia e regras globais
+   Breakpoints do projeto:
+     mobile   < 480px
+     phablet  480–767px
+     tablet   768–1023px
+     desktop  1024–1439px
+     wide     >= 1440px
+   ========================================================= */
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--creme);
+  color: var(--tinta);
+  font-family: var(--fonte-texto);
+  font-size: var(--t-corpo);
+  line-height: 1.62;
+  font-weight: 300;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+
+/* o conteúdo só aparece quando o preloader termina */
+body[data-preload="ativo"] { overflow: hidden; }
+
+.pagina {
+  opacity: 0;
+  transition: opacity .6s var(--ease-suave);
+}
+.pagina.is-visivel { opacity: 1; }
+
+/* A DM Serif Display tem um peso só, e é o peso certo: pedir
+   500 ou 600 faria o navegador engordar a fonte por conta,
+   borrando o traço. O ajuste fino aqui é de tracking, não de
+   peso: corpo pequeno pede letra mais solta. */
+h1, h2, h3 {
+  font-family: var(--fonte-display);
+  font-weight: 400;
+  line-height: 1.06;
+  letter-spacing: -.014em;
+}
+
+.hero__titulo,
+.cta__titulo { letter-spacing: -.024em; line-height: 1.0; }
+
+/* abaixo de ~2rem a serifa respira melhor com tracking neutro */
+.passo h3,
+.esp__titulo,
+.esp__titulo--vertical,
+.esp__num,
+.exame__num,
+.numero strong,
+.miriam__lista,
+.treino__nota,
+.sobre__destaque,
+.missao__frase,
+.footer__frase,
+.preloader__frase,
+.marca__nome,
+.passo__num,
+.politica__bloco h2,
+.sobre__citacao {
+  letter-spacing: 0;
+}
+
+p { text-wrap: pretty; }
+
+::selection { background: var(--ouro); color: var(--creme); }
+
+/* ---------- utilitários de layout ---------- */
+
+.wrap {
+  width: min(var(--largura-max), 100% - var(--respiro-lateral) * 2);
+  margin-inline: auto;
+}
+
+.secao {
+  position: relative;
+  padding-block: var(--gap-dobra);
+}
+
+/* o header é fixo: sem isso a âncora para embaixo dele */
+:target,
+section[id],
+[id^="contato"] { scroll-margin-top: calc(var(--header-h) + 1.5rem); }
+
+.secao--escura {
+  background: var(--verde-profundo);
+  color: var(--creme);
+}
+
+.eyebrow {
+  font-family: var(--fonte-texto);
+  font-size: var(--t-mini);
+  font-weight: 500;
+  letter-spacing: var(--tracking-eyebrow);
+  text-transform: uppercase;
+  color: var(--ouro);
+}
+
+.eyebrow--tinta { color: var(--tinta-suave); }
+
+.regua {
+  height: 1px;
+  background: var(--linha);
+  transform-origin: left center;
+}
+.secao--escura .regua { background: var(--linha-clara); }
+
+.sr-only {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* ---------- a marca (logo em máscara, recolorível) ---------- */
+
+.marca {
+  display: inline-flex;
+  align-items: center;
+  gap: .7rem;
+}
+
+.marca__simbolo {
+  width: var(--marca-tam, 34px);
+  height: var(--marca-tam, 34px);
+  flex: none;
+  background: currentColor;
+  -webkit-mask: url("../../assets/images/shared/marca-lacy.png") center / contain no-repeat;
+          mask: url("../../assets/images/shared/marca-lacy.png") center / contain no-repeat;
+}
+
+.marca__nome {
+  font-family: var(--fonte-display);
+  font-size: clamp(1.2rem, 1rem + .5vw, 1.5rem);
+  line-height: .82;
+  letter-spacing: .01em;
+}
+
+.marca__nome small {
+  display: block;
+  font-family: var(--fonte-texto);
+  font-size: 7.5px;
+  font-weight: 500;
+  letter-spacing: .44em;
+  margin-top: .55rem;
+  opacity: .74;
+}
+
+/* ---------- a assinatura (mesma máscara do preloader) ---------- */
+
+.assinatura {
+  position: relative;
+  width: var(--ass-larg, 190px);
+  aspect-ratio: 413 / 266;
+  -webkit-mask: url("../../assets/images/shared/assinatura-lacy.png") left center / contain no-repeat;
+          mask: url("../../assets/images/shared/assinatura-lacy.png") left center / contain no-repeat;
+  overflow: hidden;
+}
+
+.assinatura__tinta {
+  position: absolute;
+  inset: 0 -14% 0 0;
+  /* o degradê é a ponta da caneta: opaco atrás, esfumado na frente */
+  background: linear-gradient(96deg, currentColor 0 86%, transparent 100%);
+}

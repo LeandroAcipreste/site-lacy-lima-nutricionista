@@ -1,0 +1,404 @@
+/* =========================================================
+   animacoes.css — o vocabulário de movimento do site.
+
+   Regra do projeto: o CSS anima, o JS só controla. O
+   JavaScript escreve apenas a classe .is-in, o atributo
+   data-anim e variáveis de progresso (--i, --p).
+
+   ARQUITETURA (e o motivo dela):
+   1. ESTRUTURA nunca entra em media query. As regras de
+      display do split são layout, não movimento: trancadas
+      dentro de prefers-reduced-motion, quem tem a preferência
+      ligada via as linhas do título colarem umas nas outras
+      ("Nutrição paratransformara forma comovocê vive").
+   2. ANIMAÇÃO é o padrão, sem media query.
+   3. prefers-reduced-motion: reduce SUBTRAI: tira o
+      deslocamento e o movimento contínuo, mantém só o fade.
+      Quem pede menos movimento recebe uma página calma, não
+      uma página quebrada nem uma página vazia.
+   4. .js no <html> é a rede de segurança: se o JavaScript não
+      rodar, nada fica preso em opacity 0.
+   ========================================================= */
+
+/* =========================================================
+   1. ESTRUTURA — sempre vale
+   ========================================================= */
+
+.split { display: inline; }
+
+.split__linha { display: block; }
+
+/* a palavra é inline-block para o navegador não quebrar
+   entre dois caracteres da mesma palavra ("pre / screver") */
+.split__palavra { display: inline-block; white-space: nowrap; }
+
+.split__char { display: inline-block; }
+
+.marquee { overflow: hidden; }
+.marquee__faixa { display: flex; width: max-content; }
+
+/* =========================================================
+   2. MOVIMENTO — o padrão
+   ========================================================= */
+
+[data-anim] {
+  transition-property: opacity, transform;
+  transition-duration: var(--anim-dur, .9s);
+  transition-timing-function: var(--ease-elast);
+  transition-delay: calc(var(--d, 0) * 1s);
+}
+
+/* A hero não acompanha o ritmo das outras dobras: lá quem manda é
+   o tempo do vídeo (--v), e esticar a entrada do painel o atrasaria
+   em relação à cena que ele mostra. */
+.hero [data-anim] { --anim-dur: .9s; }
+
+[data-anim="sobe"]     { opacity: 0; transform: translate3d(0, 34px, 0); }
+[data-anim="desce"]    { opacity: 0; transform: translate3d(0, -26px, 0); }
+[data-anim="esquerda"] { opacity: 0; transform: translate3d(-38px, 0, 0); }
+[data-anim="direita"]  { opacity: 0; transform: translate3d(38px, 0, 0); }
+[data-anim="fade"]     { opacity: 0; }
+
+/* sobe de mais longe e mais devagar: é para as três fotos da
+   dobra "Cuidado" subirem uma atrás da outra, e o percurso
+   curto do "sobe" não deixaria a sequência ser lida */
+[data-anim="sobe-alto"] {
+  opacity: 0;
+  transform: translate3d(0, 96px, 0);
+  --anim-dur: 1.6s;
+}
+[data-anim="escala"]   { opacity: 0; transform: scale(1.07); }
+
+/* imagem que se revela por trás de uma cortina.
+
+   O recorte NÃO pode morar no elemento observado. Com clip-path
+   zerado nele, o IntersectionObserver reporta razão 0 para sempre:
+   medido, uma caixa de 1205px inteira na tela dava
+   isIntersecting=false, e a mesma caixa sem o clip dava 0,4335.
+   .is-in nunca chegava, e as QUATRO figuras da página ficavam
+   invisíveis — na descida e na subida. Então o observado mantém a
+   caixa limpa e quem se recorta é o conteúdo dele.
+
+   Recorta só a mídia: a legenda tem entrada própria, e agora o
+   observador a enxerga normalmente porque o pai não recorta mais.
+
+   ATENÇÃO: transition é shorthand. Uma figura que precise da
+   própria transição no mesmo elemento (a da Miriam, com o cinza no
+   hover) tem de declarar as duas juntas no CSS da página — só uma
+   apaga a outra.
+
+   Duas direções, mesmo mecanismo. O seletor é ^="cortina" para as
+   duas lerem a mesma regra; só o recorte de partida muda:
+     cortina          inset(0 0 100% 0)  abre de cima para baixo
+     cortina-lateral  inset(0 100% 0 0)  abre da esquerda para a direita
+   (a ordem de inset é topo / direita / baixo / esquerda, então
+   recuar 100% pela DIREITA é o que faz a imagem crescer a partir
+   da borda esquerda). */
+[data-anim^="cortina"] { --anim-dur: 1.7s; }
+
+[data-anim^="cortina"] > img,
+[data-anim^="cortina"] > video,
+[data-anim^="cortina"] > picture,
+[data-anim^="cortina"]::after {
+  clip-path: inset(0 0 100% 0);
+  transition: clip-path var(--anim-dur) var(--ease-elast)
+              calc(var(--d, 0) * 1s);
+}
+
+[data-anim="cortina-lateral"] > img,
+[data-anim="cortina-lateral"] > video,
+[data-anim="cortina-lateral"] > picture,
+[data-anim="cortina-lateral"]::after { clip-path: inset(0 100% 0 0); }
+
+/* A FOTO DEITADA QUE SE LEVANTA.
+   Ela começa tombada para trás, com a dobradiça na base, e sobe
+   até ficar de pé.
+
+   O giro vai na MÍDIA, não no elemento observado, pela mesma razão
+   da cortina: perto de 90° o rotateX achata a caixa, e o
+   IntersectionObserver volta a enxergar área zero.
+
+   O ângulo é uma variável com @property, e não um valor solto no
+   transform. Sem o @property o navegador não sabe que --levanta é
+   um ângulo, trata a troca como discreta, e o giro acontece de um
+   quadro para o outro em vez de animar. */
+@property --levanta {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
+[data-anim="levanta"] {
+  --anim-dur: 1.5s;
+  perspective: 1400px;
+}
+
+[data-anim="levanta"] > img,
+[data-anim="levanta"] > video,
+[data-anim="levanta"] > picture {
+  --levanta: 84deg;
+  opacity: 0;
+  transform-origin: 50% 100%;
+  transform: rotateX(var(--levanta));
+  transition: --levanta var(--anim-dur) var(--ease-elast) calc(var(--d, 0) * 1s),
+              opacity calc(var(--anim-dur) * .5) ease calc(var(--d, 0) * 1s);
+}
+
+[data-anim="levanta"].is-in > img,
+[data-anim="levanta"].is-in > video,
+[data-anim="levanta"].is-in > picture {
+  --levanta: 0deg;
+  opacity: 1;
+}
+
+/* A FOTO QUE DESPENCA.
+   O oposto da de cima: ela chega de fora do quadro, por cima, e
+   cai no lugar. A curva é de gravidade — começa devagar e chega
+   rápido — e por isso ela para seco no fim, que é o que faz a
+   queda ter peso.
+
+   --cai é medido em % da altura da própria moldura, não em px:
+   assim a queda tem sempre o mesmo tamanho relativo, de 1440 a
+   390 de largura. */
+@property --cai {
+  syntax: "<number>";
+  inherits: false;
+  initial-value: 0;
+}
+
+@property --cai-giro {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
+[data-anim="cai"] { --anim-dur: 1.05s; }
+
+[data-anim="cai"] > img,
+[data-anim="cai"] > video,
+[data-anim="cai"] > picture,
+[data-anim="cai"]::after {
+  --cai: -104;
+  --cai-giro: -4deg;
+  opacity: 0;
+  transform: translate3d(0, calc(var(--cai) * 1%), 0) rotate(var(--cai-giro));
+  transition: --cai var(--anim-dur) cubic-bezier(.55, .06, .68, .19) calc(var(--d, 0) * 1s),
+              --cai-giro var(--anim-dur) cubic-bezier(.55, .06, .68, .19) calc(var(--d, 0) * 1s),
+              opacity .3s ease calc(var(--d, 0) * 1s);
+}
+
+[data-anim="cai"].is-in > img,
+[data-anim="cai"].is-in > video,
+[data-anim="cai"].is-in > picture,
+[data-anim="cai"].is-in::after {
+  --cai: 0;
+  --cai-giro: 0deg;
+  opacity: 1;
+}
+
+/* régua que se desenha */
+[data-anim="regua"] { transform: scaleX(0); --anim-dur: 1.5s; }
+
+[data-anim].is-in {
+  opacity: 1;
+  transform: none;
+}
+
+/* O clip-path nunca volta para o [data-anim] genérico: ali ele caía
+   em TODO elemento animado e recortava os filhos na própria caixa. */
+[data-anim^="cortina"].is-in > img,
+[data-anim^="cortina"].is-in > video,
+[data-anim^="cortina"].is-in > picture,
+[data-anim^="cortina"].is-in::after { clip-path: inset(0 0 0 0); }
+
+/* --- reveal por caractere (o padrão do design-webHub,
+       reescrito em CSS: o JS só quebra o texto e numera) --- */
+
+.split__char {
+  opacity: 0;
+  transform: translate3d(0, 100%, 0);
+  transition: opacity .68s ease, transform 1.05s var(--ease-elast);
+  transition-delay: calc(var(--i) * var(--passo-char) * 1s + var(--d, 0) * 1s);
+}
+
+.is-in .split__char { opacity: 1; transform: none; }
+
+/* variante "aleatória": o desvio de delay vem do --r sorteado no JS */
+.split--sorteio .split__char {
+  transform: translate3d(0, 60%, 0) scale(.94);
+  transition-delay: calc(var(--r) * .68s + var(--d, 0) * 1s);
+}
+
+/* --- entrada E saída amarradas ao scroll ---
+   O ScrollTrigger escreve só --p na seção (0 → 2).
+   0→1 é a entrada, 1→2 é a saída, e cada caractere tem sua
+   fatia da faixa através de --i (índice) e --n (total).
+   Toda a conta acontece aqui, em CSS, não na timeline. */
+
+.split--scrub .split__char {
+  transition: none;
+  --e: clamp(0, calc((var(--p, 0) - var(--i) * .024) * 3.4), 1);
+  --s: clamp(0, calc((var(--p, 0) - 1 - (var(--n) - var(--i)) * .024) * 3.4), 1);
+  opacity: calc(var(--e) - var(--s));
+  transform: translate3d(0, calc((1 - var(--e)) * 32px + var(--s) * -28px), 0);
+}
+
+/* =========================================================
+   REVELAÇÃO AMARRADA AO TEMPO DO VÍDEO
+   O hero.js escreve uma variável só, --v, que é
+   currentTime/duration do vídeo. Cada elemento declara em
+   qual fatia desse tempo ele entra (--v0 = quando começa,
+   --vd = quanto dura), e a conta acontece aqui.
+
+   Assim a dobra se constrói no compasso da cena, e não num
+   cronômetro paralelo que só por acaso bateria com ela.
+
+   Nada de dividir por var(--n) nas contas: divisor de calc
+   precisa ser número, e o splitter já escreve --f pronto.
+   ========================================================= */
+
+[data-v] {
+  /* o padrão de --v é 1, e não 0: numa página sem cena (a de
+     privacidade) ou com o JS fora do ar, nada pode ficar
+     invisível. No index o hero.js escreve 0 na largada. */
+  --p: clamp(0, calc((var(--v, 1) - var(--v0, 0)) / var(--vd, .1)), 1);
+  opacity: var(--p);
+  transform: translate3d(0, calc((1 - var(--p)) * 22px), 0);
+  will-change: opacity, transform;
+}
+
+/* o menu desce de cima, no mesmo instante em que os botões
+   aparecem: a dobra termina de se montar de uma vez só */
+.header[data-v] {
+  transform: translate3d(0, calc((1 - var(--p)) * -100%), 0);
+}
+
+/* o título: cada caractere tem a sua fatia dentro da fatia do
+   bloco. --f (0 a 1) é a posição do caractere no texto. */
+.split--video .split__char {
+  --c: clamp(0, calc((var(--v, 1) - var(--v0, .08) - var(--f) * var(--vespalha, .4)) / var(--vchar, .08)), 1);
+  opacity: var(--c);
+  transform: translate3d(0, calc((1 - var(--c)) * 30px), 0);
+  transition: none;
+}
+
+/* --- imagens e vídeos nunca ficam parados --- */
+
+/* UM transform, montado por partes.
+
+   Um elemento só pode ter um transform, e aqui três coisas querem
+   escrever nele ao mesmo tempo: o parallax contínuo e as duas
+   entradas. Duas regras mirando `.figura img` com a mesma
+   especificidade fazem a última apagar a outra em silêncio — é um
+   bug que não dá erro e some numa refatoração.
+
+   Por isso o transform é montado UMA vez, aqui, e cada efeito só
+   escreve a variável dele:
+
+     --py        parallax contínuo, em px
+     --py-fator  quanto desse deslocamento vale aqui (1 = tudo)
+     --cai       entrada que despenca, em % da altura
+     --cai-giro  a inclinação dessa queda
+     --levanta   entrada que se põe de pé, em graus
+
+   Quem adicionar um efeito novo nesta mesma mídia acrescenta uma
+   variável aqui, não uma regra de transform nova. */
+.parallax > img,
+.parallax > video {
+  transform: translate3d(0, calc(var(--py, 0) * var(--py-fator, 1) * 1px + var(--cai, 0) * 1%), 0)
+             scale(var(--py-zoom, 1.12))
+             rotate(var(--cai-giro, 0deg))
+             rotateX(var(--levanta, 0deg));
+}
+
+/* zoom lento e contínuo em imagem de fundo */
+.zoom-lento { animation: zoom-lento 22s ease-in-out infinite alternate; }
+
+@keyframes zoom-lento {
+  from { transform: scale(1); }
+  to   { transform: scale(1.075); }
+}
+
+/* Marquee em ritmo próprio. Amarrado à rolagem ele quase não
+   andava: o trecho de scroll que a faixa ocupa é curto demais
+   para o movimento ser percebido. Correndo sozinho, ele vira
+   o batimento da página.
+   Roda por padrão e PARA quando sai da tela (.is-parado), e
+   não o contrário: se o JS não subir, a faixa anda do mesmo
+   jeito em vez de ficar congelada. */
+.marquee__faixa {
+  animation: marquee 42s linear infinite;
+  will-change: transform;
+}
+
+.marquee.is-parado .marquee__faixa { animation-play-state: paused; }
+
+@keyframes marquee {
+  from { transform: translate3d(0, 0, 0); }
+  to   { transform: translate3d(-50%, 0, 0); }
+}
+
+/* =========================================================
+   3. REDE DE SEGURANÇA — sem JS, nada fica invisível
+   ========================================================= */
+
+html:not(.js) [data-anim],
+html:not(.js) [data-v],
+html:not(.js) .split--video .split__char,
+html:not(.js) .split__char {
+  opacity: 1;
+  transform: none;
+  clip-path: none;
+}
+
+/* =========================================================
+   4. MENOS MOVIMENTO — subtrai o deslocamento, mantém o fade
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  /* nada mais viaja pela tela: só aparece */
+  [data-anim],
+  [data-anim="regua"] { transform: none; }
+
+  [data-anim^="cortina"] > img,
+  [data-anim^="cortina"] > video,
+  [data-anim^="cortina"] > picture,
+  [data-anim^="cortina"]::after { clip-path: none; }
+
+  .split__char {
+    transform: none;
+    transition: opacity .6s ease;
+    transition-delay: calc(var(--i) * var(--passo-char) * .6s);
+  }
+
+  .split--sorteio .split__char { transform: none; }
+
+  /* o compasso do vídeo continua; só o deslocamento sai */
+  [data-v],
+  .split--video .split__char { transform: none; }
+
+  .split--scrub .split__char {
+    transform: none;
+    opacity: calc(var(--e) - var(--s));
+  }
+
+  /* parallax e marquee são movimento contínuo: desligados */
+  .parallax > img,
+  .parallax > video { transform: none; }
+
+  /* nada tomba nem despenca: as duas só aparecem */
+  [data-anim="levanta"] > img,
+  [data-anim="levanta"] > video,
+  [data-anim="levanta"] > picture { --levanta: 0deg; transform: none; }
+
+  [data-anim="cai"] > img,
+  [data-anim="cai"] > video,
+  [data-anim="cai"] > picture,
+  [data-anim="cai"]::after { --cai: 0; --cai-giro: 0deg; transform: none; }
+
+  .zoom-lento { animation: none; }
+
+  /* a faixa continua andando, porque é o pedido explícito do
+     cliente, mas bem mais devagar: 42s viram 80s por volta */
+  .marquee__faixa { animation-duration: 80s; }
+}

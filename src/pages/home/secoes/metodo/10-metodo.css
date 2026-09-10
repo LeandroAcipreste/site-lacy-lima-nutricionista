@@ -1,0 +1,47 @@
+/* =========================================================
+   10. MÉTODO — quatro passos com entrada e saída no scroll
+   ========================================================= */
+
+.metodo { background: var(--creme); }
+
+.metodo__grade {
+  display: grid;
+  grid-template-columns: 1.5fr repeat(4, 1fr);
+  border-top: 1px solid var(--linha);
+  margin-top: clamp(2rem, 4vw, 3rem);
+}
+
+.metodo__intro {
+  padding: clamp(2rem, 4vw, 3rem) clamp(1.5rem, 3vw, 2.6rem) clamp(2rem, 4vw, 3rem) 0;
+}
+.metodo__intro h2 {
+  font-size: clamp(1.7rem, 1.2rem + 1.8vw, 2.7rem);
+  max-width: 13ch;
+  margin-top: 1rem;
+}
+
+.passo {
+  padding: clamp(2rem, 4vw, 3rem) clamp(1rem, 2vw, 1.7rem);
+  border-left: 1px solid var(--linha);
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+}
+
+.passo__num { font-family: var(--fonte-display); font-size: 2.1rem; color: var(--ouro); line-height: 1; }
+.passo h3 { font-size: clamp(1.2rem, 1rem + .7vw, 1.65rem); }
+.passo p { font-size: .84rem; line-height: 1.5; color: var(--tinta-suave); }
+
+/* --- quebras --- */
+
+@media (max-width: 1023px) {
+  .metodo__grade { grid-template-columns: repeat(2, 1fr); }
+  .metodo__intro { grid-column: 1 / -1; padding-right: 0; }
+  .passo { border-top: 1px solid var(--linha); }
+  .passo:nth-child(2), .passo:nth-child(4) { border-left: 0; }
+}
+
+@media (max-width: 479px) {
+  .metodo__grade { grid-template-columns: 1fr; }
+  .passo { border-left: 0; }
+}
