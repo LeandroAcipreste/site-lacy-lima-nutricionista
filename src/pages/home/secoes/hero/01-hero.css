@@ -6,6 +6,7 @@
 
 .hero {
   position: relative;
+  min-height: 100vh;
   min-height: 100svh;
   display: grid;
   align-items: center;
@@ -90,28 +91,106 @@
    Um painel pequeno encostado na direita virava um retângulo
    no canto, com um vazio enorme ao lado. Ocupando a altura
    inteira ele vira coluna, e o vazio deixa de existir. */
+/* A PARTE DIREITA
+   A montagem premium: moldura dourada vazia, painéis, ramo e
+   pódios. É um quadrado de 1254x1254, e o vão de dentro da
+   moldura foi MEDIDO nela, detectando os pixels do traço dourado:
+
+     esquerda  433 px  = 34,53%      direita  1014 px = 80,86%
+     topo      109 px  =  8,69%      base     1100 px = 87,72%
+
+   ou seja, um vão de 46,33% x 79,03% do lado da imagem.
+
+   A arte e o vídeo se posicionam contra o MESMO quadrado,
+   --cena-lado, e as frações abaixo são números puros de propósito:
+   em calc() não se multiplica comprimento por porcentagem, só por
+   número. Mexer em --cena-lado move os dois juntos. */
+.hero {
+  /* Quanto maior o lado, mais cenário aparece — a moldura e o
+     vídeo acompanham sozinhos, porque saem das mesmas frações.
+     O teto em vw é o que impede a arte de invadir a coluna de
+     texto. A conta: com --cena-dir em -4vw, o conteúdo da arte
+     (que começa a 13% do quadrado) cai em 1,04·W − 0,87·S, e isso
+     tem de ser maior que o fim do texto. Resolvendo para as
+     larguras que importam, o teto é 55vw — e abaixo de 1200px a
+     coluna de texto fica proporcionalmente maior, então lá o teto
+     cai para 50vw. */
+  /* svh só existe no Safari a partir do iOS 15.4. Em variável o
+     truque das duas declarações NÃO serve: custom property aceita
+     qualquer texto e só falha na hora do uso, então o navegador
+     antigo ficaria com a linha de baixo e quebraria. Por isso a
+     versão em svh vem num @supports, mais abaixo. */
+  --cena-lado: min(98vh, 55vw);
+  --cena-dir: -4vw;
+
+  /* o vão da moldura, em fração do lado da arte */
+  --vao-y: .0869;
+  --vao-l: .4633;
+  --vao-a: .7903;
+  --vao-dir: .1914;   /* 1 − 0,8086: quanto sobra à direita do vão */
+}
+
+.hero__cena {
+  position: absolute;
+  z-index: 0;
+  top: 50%;
+  right: var(--cena-dir);
+  width: var(--cena-lado);
+  height: var(--cena-lado);
+  translate: 0 -50%;
+  background: url("../../../../../assets/images/pages/home/hero/parte-direita-premium-hero.png")
+              center / contain no-repeat;
+  pointer-events: none;
+
+  /* AS BORDAS ESMAECIDAS.
+     Duas máscaras que se cruzam. A horizontal abre em 18% porque é
+     o lado que encosta no texto; a vertical abre em 5% só, porque
+     a moldura começa em 8,69% e um esmaecido mais fundo comeria o
+     traço dourado dela. */
+  -webkit-mask-image:
+    linear-gradient(90deg, transparent 0, #000 11%, #000 95%, transparent 100%),
+    linear-gradient(180deg, transparent 0, #000 4%, #000 96%, transparent 100%);
+          mask-image:
+    linear-gradient(90deg, transparent 0, #000 11%, #000 95%, transparent 100%),
+    linear-gradient(180deg, transparent 0, #000 4%, #000 96%, transparent 100%);
+  -webkit-mask-composite: source-in;
+          mask-composite: intersect;
+}
+
+/* O VÍDEO, dentro do vão da moldura. */
 .hero__video {
   position: absolute;
   z-index: 1;
-  top: 0;
-  right: 0;
-  height: 100%;
-  aspect-ratio: 9 / 16;
-  width: auto;
+  width: calc(var(--cena-lado) * var(--vao-l));
+  height: calc(var(--cena-lado) * var(--vao-a));
+  right: calc(var(--cena-dir) + var(--cena-lado) * var(--vao-dir));
+  top: calc(50% - var(--cena-lado) / 2 + var(--cena-lado) * var(--vao-y));
+  aspect-ratio: auto;
+  margin: 0;
 }
 
+/* o quadro não desenha moldura: quem emoldura é a arte. O raio
+   acompanha o arredondamento do traço dourado. */
 .hero__quadro {
   position: relative;
   display: block;
   width: 100%;
   height: 100%;
   overflow: hidden;
+  border-radius: calc(var(--cena-lado) * .05);
 }
 
+/* O SAFARI NÃO RECORTA VÍDEO PELO border-radius DO PAI.
+   `overflow: hidden` mais canto arredondado funciona para tudo,
+   menos para <video> e <canvas> no WebKit: o vídeo aparece com os
+   cantos quadrados, estourando por cima do traço dourado da
+   moldura. Repetir o raio na própria mídia resolve, e não custa
+   nada nos outros navegadores. */
 .hero__quadro > img,
 .hero__quadro > video {
   position: absolute;
   inset: 0;
+  border-radius: inherit;
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -135,15 +214,8 @@
   transition: opacity 1s var(--ease-suave) .35s;
 }
 
-.hero__video::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  /* nenhum véu no desktop: o painel tem de ser indistinguível
-     do fundo, e todo degradê aqui desenharia a borda dele */
-  background: none;
-  pointer-events: none;
-}
+/* o brilho da moldura já vem na arte; aqui não entra véu nenhum */
+.hero__video::after { content: none; }
 
 /* a moldura saiu: ela desenhava exatamente a borda que o
    alinhamento parede/piso existe para apagar */
@@ -189,57 +261,99 @@
 
 /* --- quebras da hero --- */
 
+/* entre 1024 e 1200 a coluna de texto ocupa proporcionalmente
+   mais, e a arte precisa recuar mais um pouco */
+@media (max-width: 1200px) and (min-width: 1024px) {
+  .hero { --cena-lado: min(92vh, 50vw); }
+}
+
 @media (max-width: 1023px) {
-  .hero { min-height: auto; }
   .hero__grade { grid-template-columns: 1fr; gap: clamp(2rem, 6vw, 3rem); }
-  .hero__video { margin-inline: auto; height: min(62svh, 520px); }
   .hero__rolar { display: none; }
 }
 
-/* --- no celular o vídeo vira o fundo da dobra ---
-   Empilhado, ele caía abaixo da linha d'água e ninguém via as
-   palavras entrarem enquanto ele roda, que é o ponto da abertura.
-   Com .wrap em static, o painel se posiciona contra a .hero e
-   cobre também o padding dela. */
+/* --- NO CELULAR A MONTAGEM É A DOBRA ---
+   Volta o gesto que existia quando havia só o vídeo: a arte ocupa
+   a tela inteira e o texto entra escrito por cima dela.
+
+   O enquadramento é feito pela MOLDURA, não pela arte. O centro
+   dela está em 57,7% na horizontal e 48,2% na vertical do
+   quadrado, medido no PNG — então o quadrado desloca 7,7% do lado
+   para a esquerda e 1,8% para baixo, e aí a moldura fica no meio
+   da tela.
+
+   O lado é max(96svh, 128vw): numa tela de 390x844 dá 810 px, e a
+   moldura fica com 375x640, deixando 7 px de folga de cada lado.
+   Menos que isso e o traço dourado encosta na borda; mais e ele
+   sai da tela. */
 @media (max-width: 767px) {
-  .hero { min-height: 100svh; }
+  .hero {
+    min-height: 100vh;
+    min-height: 100svh;
+    --cena-lado: max(96vh, 128vw);
+    padding-bottom: clamp(3rem, 12vh, 6rem);
+  }
 
   .hero > .wrap { position: static; }
 
-  /* aqui o vídeo é a dobra inteira: não existe borda para
-     esconder, e mascarar só abriria um vinhete estranho */
-  .hero__video,
-  .hero__quadro,
-  .hero__video video,
-  .hero__video img {
-    -webkit-mask-image: none;
-            mask-image: none;
+  .hero__cena {
+    right: auto;
+    left: calc(50% - var(--cena-lado) * .077);
+    top: calc(50% + var(--cena-lado) * .018);
+    translate: -50% -50%;
   }
 
   .hero__video {
-    position: absolute;
-    inset: 0;
-    z-index: 0;
-    width: 100%;
-    height: 100%;
-    max-width: none;
-    aspect-ratio: auto;
-    margin: 0;
+    right: auto;
+    left: calc(50% - var(--cena-lado) * .077 - var(--cena-lado) / 2
+               + var(--cena-lado) * .3453);
+    top: calc(50% + var(--cena-lado) * .018 - var(--cena-lado) / 2
+              + var(--cena-lado) * var(--vao-y));
   }
 
-  /* o véu escurece a partir da metade: o título é creme e cai
-     em cima do vestido, que também é creme */
-  .hero__video::after {
+  /* O VÉU DE LEITURA.
+     O título é creme e cai em cima do vestido, que também é creme.
+     Fica acima da arte E do vídeo (z-index 2) e abaixo do texto
+     (z-index 3) — é a mesma ordem que existia antes. */
+  .hero::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
     background: linear-gradient(180deg,
-        rgba(7, 31, 25, .62) 0%,
-        rgba(7, 31, 25, .3) 20%,
-        rgba(7, 31, 25, .72) 48%,
-        rgba(7, 31, 25, .92) 76%,
+        rgba(7, 31, 25, .68) 0%,
+        rgba(7, 31, 25, .34) 22%,
+        rgba(7, 31, 25, .70) 50%,
+        rgba(7, 31, 25, .92) 78%,
         rgba(7, 31, 25, .97) 100%);
   }
 
-  .hero__copia { position: relative; z-index: 2; }
+  .hero__copia { position: relative; z-index: 3; }
 
-  /* a moldura pertence ao painel, não ao fundo */
-  .hero__moldura { display: none; }
+  .hero__quadro { border-radius: calc(var(--cena-lado) * .05); }
+}
+
+/* =========================================================
+   svh onde o navegador entende
+
+   O svh é a altura da janela SEM a barra do navegador aparecendo
+   — é o que impede a dobra de "pular" quando a barra do Safari no
+   iOS some ou volta. Onde ele não existe, as regras acima já
+   deixaram o vh no lugar.
+
+   Em variável isto precisa vir por @supports, e não por duas
+   declarações seguidas: custom property guarda o texto sem
+   validar, então a linha inválida venceria a válida.
+   ========================================================= */
+@supports (height: 100svh) {
+  .hero { --cena-lado: min(98svh, 55vw); }
+
+  @media (max-width: 1200px) and (min-width: 1024px) {
+    .hero { --cena-lado: min(92svh, 50vw); }
+  }
+
+  @media (max-width: 767px) {
+    .hero { --cena-lado: max(96svh, 128vw); }
+  }
 }

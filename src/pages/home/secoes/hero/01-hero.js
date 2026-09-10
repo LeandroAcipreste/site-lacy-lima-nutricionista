@@ -19,6 +19,17 @@
 
 import { initVideoHero } from "./01-hero-video.js";
 
+/* Quanto dura a cena, em ms.
+
+   É a duração do vídeo da hero, e serve para o caminho SEM vídeo:
+   quando o autoplay é recusado, ou o arquivo não chega a tempo, a
+   coreografia anda por cronômetro em vez de por currentTime. Os
+   dois precisam durar o mesmo, senão a mesma dobra tem dois
+   ritmos diferentes dependendo de o vídeo ter carregado ou não.
+
+   Trocou o vídeo? Este é o número a acertar. */
+const DURACAO_CENA = 7700;
+
 export function initHero() {
   const hero = document.querySelector(".hero");
   if (!hero) return Promise.resolve(null);
@@ -113,7 +124,7 @@ export function initHero() {
 
     if (!video) {
       acenderPainel();
-      seguirRelogio(6000);
+      seguirRelogio(DURACAO_CENA);
       return;
     }
 
@@ -123,7 +134,7 @@ export function initHero() {
     // Espera limitada: se o vídeo demorar, o texto entra sem ele.
     const el = await Promise.race([
       video.pronto,
-      new Promise((r) => setTimeout(() => r(null), 1400)),
+      new Promise((r) => setTimeout(() => r(null), 2500)),
     ]);
 
     /* O readyState pode CAIR entre a promessa e este instante: a
@@ -145,13 +156,13 @@ export function initHero() {
 
     if (!daParaTocar) {
       // fica o pôster, e a cena anda no cronômetro
-      seguirRelogio(6000);
+      seguirRelogio(DURACAO_CENA);
       return;
     }
 
     // se o autoplay for recusado o tempo não anda: o cronômetro assume
     setTimeout(() => {
-      if (el.paused && el.currentTime === 0) seguirRelogio(6000);
+      if (el.paused && el.currentTime === 0) seguirRelogio(DURACAO_CENA);
     }, 900);
 
     seguirVideo(el);

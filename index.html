@@ -28,7 +28,7 @@
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 
   <link rel="preload" as="image" href="assets/images/shared/assinatura-lacy.png">
-  <link rel="preload" as="image" href="assets/images/pages/home/hero-poster.webp">
+  <link rel="preload" as="image" href="assets/images/pages/home/hero/hero-poster.webp">
 
   <link rel="stylesheet" href="src/css/style.css">
   <link rel="stylesheet" href="src/pages/home/home.css">
@@ -106,7 +106,7 @@
       <!-- ============ 1. HERO ============ -->
       <section class="hero" id="inicio">
 
-
+        <span class="hero__cena" aria-hidden="true"></span>
 
         <div class="wrap">
           <div class="hero__grade">
@@ -141,13 +141,13 @@
 
             <figure class="hero__video" data-anim="fade">
               <span class="hero__quadro">
-                <img src="assets/images/pages/home/hero-poster.webp"
+                <img src="assets/images/pages/home/hero/hero-poster.webp"
                      alt="Lacy Lima, nutricionista, no consultório"
-                     width="608" height="1080" fetchpriority="high">
+                     width="270" height="480" fetchpriority="high">
                 <video data-video-hero
                        data-src="assets/videos/hero-lacy.mp4"
-                       poster="assets/images/pages/home/hero-poster.webp"
-                       muted playsinline preload="auto"
+                       poster="assets/images/pages/home/hero/hero-poster.webp"
+                       muted playsinline webkit-playsinline preload="auto"
                        aria-hidden="true"></video>
               </span>
             </figure>

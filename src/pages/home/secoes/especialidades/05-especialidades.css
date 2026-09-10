@@ -55,7 +55,9 @@
   top: calc(var(--header-h) + 2.5vh + var(--i, 0) * 13px);
 
   /* a altura manda no tempo de tela; a margem estica esse tempo */
+  height: clamp(360px, 66vh, 620px);
   height: clamp(360px, 66svh, 620px);
+  margin-bottom: clamp(60px, 22vh, 190px);
   margin-bottom: clamp(60px, 22svh, 190px);
 
   margin-inline: 0;
@@ -100,6 +102,7 @@
    previsão 180 px, medido 180 px, com o cartão no top exato nos
    três pontos da janela e solto 60 px depois dela. */
 .pilha__fim {
+  height: clamp(60px, 20vh, 180px);
   height: clamp(60px, 20svh, 180px);
   pointer-events: none;
 }
@@ -187,7 +190,9 @@
 @media (max-width: 900px) {
   .pilha__cartao {
     top: calc(var(--header-h) + 1.5vh + var(--i, 0) * 9px);
+    height: clamp(320px, 62vh, 520px);
     height: clamp(320px, 62svh, 520px);
+    margin-bottom: clamp(48px, 16vh, 140px);
     margin-bottom: clamp(48px, 16svh, 140px);
   }
 }

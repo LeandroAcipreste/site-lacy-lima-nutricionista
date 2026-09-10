@@ -13,11 +13,31 @@
  * coreografia de "as palavras entram enquanto o vídeo roda".
  */
 
-/* .15s de atraso + 3s de giro; o subtítulo fecha em 3,3s */
-const DURACAO = 3500;
+/* A coreografia inteira, 1,5x mais lenta que era: o giro fecha em
+   4,72s e o subtítulo em 4,95s. O preloader existe para o vídeo da
+   hero chegar antes da dobra abrir, e o vídeo tem 2,7 MB — com os
+   3,5s de antes ele não chegava a tempo em conexão comum. */
+const DURACAO = 5200;
 
-/* tolerância extra esperando o vídeo, depois sai de qualquer jeito */
-const ESPERA_MAXIMA = 2600;
+/* Tolerância extra esperando o vídeo, depois sai de qualquer jeito. */
+const ESPERA_MAXIMA = 4800;
+
+/* TETO ABSOLUTO, contado do início do carregamento da página.
+
+   DURACAO e ESPERA_MAXIMA contam a partir do momento em que ESTE
+   módulo roda — e em rede lenta ele roda tarde, porque o HTML, o
+   CSS e as fontes vêm antes. Medido num celular em 4G: o módulo
+   subia por volta dos 11s, e os 10s da janela viravam 21s de
+   preloader na tela.
+
+   performance.now() é o tempo desde o começo da navegação, então
+   este teto é o único número que o visitante realmente sente. */
+const TETO_ABSOLUTO = 11000;
+
+/** quanto ainda podemos segurar, sem passar do teto */
+function restante() {
+  return Math.max(0, TETO_ABSOLUTO - performance.now());
+}
 
 /**
  * @param {{aguardar?: Promise<unknown>|null}} config
@@ -35,7 +55,8 @@ export function initPreloader(config = {}) {
   /** A marca terminou de aparecer: espera o vídeo, com teto, e sai. */
   async function fechar() {
     if (aguardar) {
-      const teto = new Promise((r) => setTimeout(r, ESPERA_MAXIMA));
+      const teto = new Promise((r) =>
+        setTimeout(r, Math.min(ESPERA_MAXIMA, restante())));
       await Promise.race([aguardar.catch(() => null), teto]);
     }
     encerrar();
@@ -73,5 +94,5 @@ export function initPreloader(config = {}) {
 
   // quem pediu menos movimento não espera o giro inteiro
   const semMovimento = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  setTimeout(fechar, semMovimento ? 1600 : DURACAO);
+  setTimeout(fechar, Math.min(semMovimento ? 2200 : DURACAO, restante()));
 }

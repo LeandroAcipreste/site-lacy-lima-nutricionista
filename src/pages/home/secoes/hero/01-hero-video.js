@@ -43,30 +43,59 @@ export function initVideoHero() {
   }
 
   const pronto = new Promise((resolve) => {
+    let pulso = 0;
     const liberar = () => {
+      if (pulso) { clearInterval(pulso); pulso = 0; }
       video.classList.add("is-pronto");
       // o invólucro também: é por ele que o CSS apaga o pôster
       video.parentElement?.classList.add("is-pronto");
       resolve(video);
     };
 
-    /* Só o "canplaythrough" conta, nunca o "canplay".
+    /* PRONTO PARA TOCAR — um critério que o Safari também cumpre.
 
-       canplay é readyState 3: dá para COMEÇAR. canplaythrough é 4:
-       dá para ir até o fim sem parar. Medido num celular em 4G,
-       soltar no 3 entregava o vídeo com 1,82 s de 8 bufferizados,
-       e ele engasgava QUATRO vezes durante a cena.
+       O gate era só o evento "canplaythrough". No iOS ele muitas
+       vezes NÃO dispara antes de a reprodução começar: o Safari
+       segura o download e espera, então a promessa nunca resolvia
+       e a dobra abria sempre no pôster, mesmo com o vídeo já
+       baixado.
 
-       Vídeo picotado é pior que pôster parado. Se o 4 não vier a
-       tempo, esta promessa resolve null (pelo timeout abaixo) e a
-       dobra roda com o pôster e o cronômetro — parada, mas
-       inteira. */
+       O critério agora é o que de fato importa, e vale em todo
+       navegador: readyState suficiente para começar E buffer à
+       frente bastante para a cena rodar sem engasgar. O evento
+       canplaythrough continua valendo como atalho, quando vem.
+
+       Vídeo picotado continua sendo pior que pôster parado: se
+       nem isto for atingido a tempo, a promessa resolve null e a
+       dobra roda com o pôster e o cronômetro. */
+    const FOLGA = 4; // segundos de buffer à frente
+
+    const daParaIr = () => {
+      if (video.readyState < 3) return false;
+      if (!video.buffered.length) return false;
+      const fim = video.buffered.end(video.buffered.length - 1);
+      const dur = video.duration;
+      return fim >= Math.min(isFinite(dur) ? dur : Infinity, FOLGA);
+    };
+
+    const conferir = () => { if (daParaIr()) liberar(); };
+
     video.addEventListener("canplaythrough", liberar, { once: true });
+    for (const nome of ["loadeddata", "canplay", "progress", "suspend"]) {
+      video.addEventListener(nome, conferir);
+    }
+    /* o Safari às vezes para de emitir "progress" com o buffer já
+       cheio; um pulso curto cobre esse silêncio */
+    pulso = setInterval(conferir, 400);
+    setTimeout(() => { if (pulso) { clearInterval(pulso); pulso = 0; } }, 12000);
 
     // se o vídeo não carregar, ninguém fica esperando para sempre:
     // o pôster continua no lugar e a coreografia segue sem ele
     video.addEventListener("error", () => resolve(null), { once: true });
-    setTimeout(() => resolve(null), 9000);
+    /* desiste depois da janela do preloader (5,2 + 4,8 = 10s), não
+       antes: desistir cedo entregava null com o vídeo já quase
+       pronto, e a dobra abria no pôster à toa */
+    setTimeout(() => resolve(null), 11000);
   });
 
   video.src = video.dataset.src;
